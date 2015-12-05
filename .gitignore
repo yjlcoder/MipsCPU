@@ -55,3 +55,13 @@ xlnx_auto_0_xdb/
 xst/
 _ngo/
 _xmsgs/
+
+
+# vim
+*.swp
+*.bak
+
+#modelsim
+*.fdo
+*.udo
+*.wlf
