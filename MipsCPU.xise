@@ -69,6 +69,10 @@
       <association xil_pn:name="PostRouteSimulation" xil_pn:seqID="24"/>
       <association xil_pn:name="PostTranslateSimulation" xil_pn:seqID="24"/>
     </file>
+    <file xil_pn:name="HILO.v" xil_pn:type="FILE_VERILOG">
+      <association xil_pn:name="BehavioralSimulation" xil_pn:seqID="30"/>
+      <association xil_pn:name="Implementation" xil_pn:seqID="30"/>
+    </file>
   </files>
 
   <properties>

@@ -86,7 +86,6 @@ module mips(
     wire [4:0] memory2writeback_DestAddr;
     wire [31:0] memory2writeback_Wdata;
 
-
     assign addr_output = pc;
 
     pc_module pc_module0(
@@ -107,6 +106,8 @@ module mips(
         .insDecode_pc(insDecode_PC), .insDecode_ins(insDecode_Inst),
         .reg1_data_input(reg1Data), .reg2_data_input(reg2Data),
         .reg1_read_enabler(reg1Enabler), .reg2_read_enabler(reg2Enabler),
+        .execute_WriteOrNot(execute_WriteOrNot), .execute_DestAddr(execute_DestAddr), .execute_Wdata,
+        .memory_WriteOrNot(memory_WriteOrNot), .memory_DestAddr(memory_DestAddr), .memory_Wdata(memory_Wdata),
         .reg1_addr_output(reg1Addr), .reg2_addr_output(reg2Addr),
         .aluop_output(InsDecode_Aluop), .alusel_output(InsDecode_Alusel),
         .regOp1(InsDecode_Reg1), .regOp2(InsDecode_Reg2),

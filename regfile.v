@@ -66,7 +66,7 @@ module regfile(
             rdata2 <= 0;
         else if (raddr2 == waddr && we == 1 && re1 == 1)
             rdata2 <= wdata;
-        else if (re1 == 1)
+        else if (re2 == 1)
             rdata2 <= regs[raddr2];
         else
             rdata2 <= 0;
