@@ -18,22 +18,22 @@
 // Additional Comments: 
 //
 //////////////////////////////////////////////////////////////////////////////////
-module HILO(
+module hilo(
     input clk,
     input rst,
     input enabler,
-    input memory2writeback_HI,
-    input memory2writeback_LO,
+    input wire[31:0] memory2writeback_HI,
+    input wire[31:0] memory2writeback_LO,
 
-    output reg hilo_hi,
-    output reg hilo_lo,
+    output reg[31:0] hilo_hi,
+    output reg[31:0] hilo_lo
     );
 
-    always (posedge clk) begin
+    always @ (posedge clk) begin
         if(rst == 1) begin
             hilo_hi <= 0;
             hilo_lo <= 0;
-        end else
+        end else begin
             if (enabler == 1) begin
                 hilo_hi <= memory2writeback_HI;
                 hilo_lo <= memory2writeback_LO;

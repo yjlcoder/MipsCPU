@@ -70,21 +70,39 @@ module mips(
     wire execute_WriteOrNot;
     wire [4:0] execute_DestAddr;
     wire [31:0] execute_Wdata;
+    wire execute_HILO_enabler;
+    wire [31:0]execute_HILO_HI;
+    wire [31:0]execute_HILO_LO;
 
     /* execute2memory -> memory */
     wire execute2memory_WriteOrNot;
     wire [4:0] execute2memory_DestAddr;
     wire [31:0] execute2memory_Wdata;
+    wire execute2memory_HILO_enabler;
+    wire [31:0] execute2memory_HILO_HI;
+    wire [31:0] execute2memory_HILO_LO;
     
     /* memory -> memory2writeback */
     wire memory_WriteOrNot;
     wire [4:0] memory_DestAddr;
     wire [31:0] memory_Wdata;
+    wire memory_HILO_enabler;
+    wire [31:0] memory_HILO_HI;
+    wire [31:0] memory_HILO_LO;
 
-    /* memory2writeback -> writeback */
+    /* memory2writeback -> regfile */
     wire memory2writeback_WriteOrNot;
     wire [4:0] memory2writeback_DestAddr;
     wire [31:0] memory2writeback_Wdata;
+
+    /* memory2writeback -> hilo & execute*/
+    wire memory2writeback_HILO_enabler;
+    wire [31:0] memory2writeback_HILO_HI;
+    wire [31:0] memory2writeback_HILO_LO;
+
+    /* hilo -> execute */
+    wire [31:0] hilo_HI;
+    wire [31:0] hilo_LO;
 
     assign addr_output = pc;
 
@@ -129,32 +147,55 @@ module mips(
         .aluop_input(InsDecode2execute_aluop), .alusel_input(InsDecode2execute_alusel),
         .regOp1(InsDecode2execute_Reg1), .regOp2(InsDecode2execute_Reg2),
         .dest_addr(InsDecode2execute_DestAddr), .write_or_not(InsDecode2execute_WriteOrNot),
+        .memory_HILO_enabler(memory_HILO_enabler), .memory_HILO_HI(memory_HILO_HI), .memory_HILO_LO(memory_HILO_LO),
+        .memory2writeback_HILO_enabler(memory2writeback_HILO_enabler),
+        .memory2writeback_HILO_HI(memory2writeback_HILO_HI),
+        .memory2writeback_HILO_LO(memory2writeback_HILO_LO),
         .dest_addr_output(execute_DestAddr), .write_or_not_output(execute_WriteOrNot),
-        .wdata_output(execute_Wdata)
+        .wdata_output(execute_Wdata),
+        .execute_HILO_enabler(execute_HILO_enabler),.execute_HILO_HI(execute_HILO_HI), .execute_HILO_LO(execute_HILO_LO)
     );
 
     execute2memory execute2memory0(
         .rst(rst), .clk(clk),
         .dest_addr(execute_DestAddr), .write_or_not(execute_WriteOrNot),
         .wdata(execute_Wdata),
+        .execute_HILO_enabler(execute_HILO_enabler),
+        .execute_HILO_HI(execute_HILO_HI),
+        .execute_HILO_LO(execute_HILO_LO),
         .dest_addr_output(execute2memory_DestAddr), .write_or_not_output(execute2memory_WriteOrNot),
-        .wdata_output(execute2memory_Wdata)
+        .wdata_output(execute2memory_Wdata),
+        .execute2memory_HILO_enabler(execute2memory_HILO_enabler),
+        .execute2memory_HILO_HI(execute2memory_HILO_HI),
+        .execute2memory_HILO_LO(execute2memory_HILO_LO)
     );
 
     memory memory0(
         .rst(rst),
         .dest_addr(execute2memory_DestAddr), .write_or_not(execute2memory_WriteOrNot),
         .wdata(execute2memory_Wdata),
+        .execute2memory_HILO_enabler(execute2memory_HILO_enabler),
+        .execute2memory_HILO_HI(execute2memory_HILO_HI),
+        .execute2memory_HILO_LO(execute2memory_HILO_LO),
         .dest_addr_output(memory_DestAddr), .write_or_not_output(memory_WriteOrNot),
-        .wdata_output(memory_Wdata)
+        .wdata_output(memory_Wdata),
+        .memory_HILO_enabler(memory_HILO_enabler),
+        .memory_HILO_HI(memory_HILO_HI),
+        .memory_HILO_LO(memory_HILO_LO)
     );
 
     memory2writeback memory2writeback0(
         .clk(clk), .rst(rst),
         .dest_addr(memory_DestAddr), .write_or_not(memory_WriteOrNot),
         .wdata(memory_Wdata),
+        .memory_HILO_enabler(memory_HILO_enabler),
+        .memory_HILO_HI(memory_HILO_HI),
+        .memory_HILO_LO(memory_HILO_LO),
         .dest_addr_output(memory2writeback_DestAddr), .write_or_not_output(memory2writeback_WriteOrNot),
-        .wdata_output(memory2writeback_Wdata)
+        .wdata_output(memory2writeback_Wdata),
+        .memory2writeback_HILO_enabler(memory2writeback_HILO_enabler),
+        .memory2writeback_HILO_HI(memory2writeback_HILO_HI),
+        .memory2writeback_HILO_LO(memory2writeback_HILO_LO)
     );
 
     regfile regfile0(
@@ -163,6 +204,13 @@ module mips(
         .re1(reg1Enabler), .re2(reg2Enabler),
         .raddr1(reg1Addr), .raddr2(reg2Addr),
         .rdata1(reg1Data), .rdata2(reg2Data)
+    );
+
+    hilo hilo0(
+        .clk(clk), .rst(rst),
+        .enabler(memory2writeback_HILO_enabler),
+        .memory2writeback_HI(memory2writeback_HILO_HI), .memory2writeback_LO(memory2writeback_HILO_LO),
+        .hilo_hi(hilo_HI), .hilo_lo(hilo_LO)
     );
 
 endmodule

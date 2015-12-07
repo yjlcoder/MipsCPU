@@ -265,6 +265,42 @@ module insDecode(
                             end
                         end 
 
+                        `OP_MFHI:begin
+                            aluop_output <= `ALUOP_MFHI;
+                            alusel_output <= `ALUSEL_MOVE;
+                            reg1_read_enabler <= 0;
+                            reg2_read_enabler <= 0;
+                            write_or_not <= 1;
+                            valid <= 1;
+                        end
+
+                        `OP_MFLO:begin
+                            aluop_output <= `ALUOP_MFLO;
+                            alusel_output <= `ALUSEL_MOVE;
+                            reg1_read_enabler <= 0;
+                            reg2_read_enabler <= 0;
+                            write_or_not <= 1;
+                            valid <= 1;
+                        end
+
+                        `OP_MTHI:begin
+                            aluop_output <= `ALUOP_MTHI;
+                            alusel_output <= `ALUSEL_MOVE;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            write_or_not <= 0;
+                            valid <= 1;
+                        end
+
+                        `OP_MTLO:begin
+                            aluop_output <= `ALUOP_MTLO;
+                            alusel_output <= `ALUSEL_MOVE;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            write_or_not <= 0;
+                            valid <= 1;
+                        end
+
                         `OP_SLL: begin
                             if (op2 == `OP_NOP10_6) begin
                                 write_or_not <= 0;
