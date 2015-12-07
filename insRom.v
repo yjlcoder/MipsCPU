@@ -24,7 +24,7 @@ module instRom(
     output reg[31:0] inst
     );
 
-    reg[31:0] instMem[0:31];
+    reg[31:0] instMem[0:255];
 
     initial $readmemh( "instRom.data", instMem );
 

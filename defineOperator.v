@@ -27,6 +27,11 @@
 `define OP_XORI 6'b001110
 `define OP_LUI 6'b001111
 `define OP_SPECIAL 6'b000000
+`define OP_SPECIAL2 6'b011100
+`define OP_ADDI 6'b001000
+`define OP_ADDIU 6'b001001
+`define OP_SLTI 6'b001010
+`define OP_SLTIU 6'b001011
 
 //¹¦ÄÜÂë
 //000000
@@ -50,6 +55,20 @@
 `define OP_MFLO 6'b010010
 `define OP_MTHI 6'b010001
 `define OP_MTLO 6'b010011
+
+`define OP_ADD 6'b100000
+`define OP_ADDU 6'b100001
+`define OP_SUB 6'b100010
+`define OP_SUBU 6'b100011
+`define OP_SLT 6'b101010
+`define OP_SLTU 6'b101011
+`define OP_MULT 6'b011000
+`define OP_MULTU 6'b011001
+
+//011100
+`define OP_CLZ 6'b100000
+`define OP_CLO 6'b100001
+`define OP_MUL 6'b000010
 
 //10_6
 `define OP_NOP10_6 5'b00000
@@ -78,10 +97,29 @@
 `define ALUOP_MFLO  8'b00010010
 `define ALUOP_MTLO  8'b00010011
 
+`define ALUOP_SLT  8'b00101010
+`define ALUOP_SLTU  8'b00101011
+`define ALUOP_SLTI  8'b01010111
+`define ALUOP_SLTIU  8'b01011000   
+`define ALUOP_ADD  8'b00100000
+`define ALUOP_ADDU  8'b00100001
+`define ALUOP_SUB  8'b00100010
+`define ALUOP_SUBU  8'b00100011
+`define ALUOP_ADDI  8'b01010101
+`define ALUOP_ADDIU  8'b01010110
+`define ALUOP_CLZ  8'b10110000
+`define ALUOP_CLO  8'b10110001
+
+`define ALUOP_MULT  8'b00011000
+`define ALUOP_MULTU  8'b00011001
+`define ALUOP_MUL  8'b10101001
+
 `define ALUOP_NOP 8'b0000_0000
 
 /* alusel */
 `define ALUSEL_LOGIC 3'b001
 `define ALUSEL_SHIFT 3'b010
 `define ALUSEL_MOVE 3'b011
+`define ALUSEL_ARCH 3'b100
+`define ALUSEL_MUL 3'b101
 `define ALUSEL_NOP 3'b000

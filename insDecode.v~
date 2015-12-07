@@ -135,63 +135,6 @@ module insDecode(
                     valid <= 1;
                 end
 
-                `OP_ADDI: begin
-                    write_or_not <= 1;
-                    aluop_output <= `ALUOP_ADDI;
-                    alusel_output <= `ALUSEL_ARCH;
-                    reg1_read_enabler <= 1;
-                    reg2_read_enabler <= 0;
-                    if(insDecode_ins[15] == 1'b1)
-                        imm <= {16'hffff, insDecode_ins[15:0]};
-                    else
-                        imm <= {16'b0, insDecode_ins[15:0]};
-                    dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
-                end
-
-                `OP_ADDIU: begin
-                    write_or_not <= 1;
-                    aluop_output <= `ALUOP_ADDIU;
-                    alusel_output <= `ALUSEL_ARCH;
-                    reg1_read_enabler <= 1;
-                    reg2_read_enabler <= 0;
-                    if(insDecode_ins[15] == 1'b1)
-                        imm <= {16'hffff, insDecode_ins[15:0]};
-                    else
-                        imm <= {16'b0, insDecode_ins[15:0]};
-                    dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
-                end
-
-                `OP_SLTI: begin
-                    write_or_not <= 1;
-                    aluop_output <= `ALUOP_SLT;
-                    alusel_output <= `ALUSEL_ARCH;
-                    reg1_read_enabler <= 1;
-                    reg2_read_enabler <= 0;
-                    if(insDecode_ins[15] == 1'b1)
-                        imm <= {16'hffff, insDecode_ins[15:0]};
-                    else
-                        imm <= {16'b0, insDecode_ins[15:0]};
-                    dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
-                end
-
-                `OP_SLTIU: begin
-                    write_or_not <= 1;
-                    aluop_output <= `ALUOP_SLTU;
-                    alusel_output <= `ALUSEL_ARCH;
-                    reg1_read_enabler <= 1;
-                    reg2_read_enabler <= 0;
-                    if(insDecode_ins[15] == 1'b1)
-                        imm <= {16'hffff, insDecode_ins[15:0]};
-                    else
-                        imm <= {16'b0, insDecode_ins[15:0]};
-                    dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
-                end
-
-
                 `OP_SPECIAL: begin
                     case (op3)
                         `OP_AND: begin
@@ -360,75 +303,8 @@ module insDecode(
 
                         `OP_ADD:begin
                             aluop_output <= `ALUOP_ADD;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end
+                            alusel_output <= `ALUSEL_MOVE;
 
-                        `OP_ADDU: begin
-                            aluop_output <= `ALUOP_ADDU;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end 
-
-                        `OP_SUB: begin
-                            aluop_output <= `ALUOP_SUB;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end
-
-                        `OP_SUBU: begin
-                            aluop_output <= `ALUOP_SUBU;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end
-
-                        `OP_SLT: begin
-                            aluop_output <= `ALUOP_SLT;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end
-
-                        `OP_SLTU: begin
-                            aluop_output <= `ALUOP_SLTU;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            write_or_not <= 1;
-                            valid <= 1;
-                        end
-
-                        `OP_MULT: begin
-                            write_or_not <= 0;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            aluop_output <= `ALUOP_MULT;
-                            alusel_output <= `ALUSEL_MUL;
-                            valid <= 1;
-                        end
-
-                        `OP_MULTU: begin
-                            write_or_not <= 0;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            aluop_output <= `ALUOP_MULT;
-                            alusel_output <= `ALUSEL_MUL;
-                            valid <= 1;
-                        end
 
                         `OP_SLL: begin
                             if (op2 == `OP_NOP10_6) begin
@@ -450,38 +326,6 @@ module insDecode(
                                 valid <= 1;
                             end
                         end
-
-                    endcase
-                end
-
-                `OP_SPECIAL2: begin
-                    case(op3)
-                        `OP_CLZ: begin
-                            write_or_not <= 1;
-                            aluop_output <= `ALUOP_CLZ;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 0;
-                            valid <= 1;
-                        end
-
-                        `OP_CLO: begin
-                            write_or_not <= 1;
-                            aluop_output <= `ALUOP_CLO;
-                            alusel_output <= `ALUSEL_ARCH;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 0;
-                            valid <= 1;
-                        end
-
-                        `OP_MUL: begin
-                            write_or_not <= 1;
-                            aluop_output <= `ALUOP_MUL;
-                            alusel_output <= `ALUSEL_MUL;
-                            reg1_read_enabler <= 1;
-                            reg2_read_enabler <= 1;
-                            valid <= 1;
-                        end
                     endcase
                 end
             endcase
@@ -489,8 +333,7 @@ module insDecode(
     end
 
     always @ (*) begin
-        if (rst == 1)
-            regOp1 = 0;
+        if (rst == 1) regOp1 = 0;
         else if (reg1_read_enabler == 1 && execute_WriteOrNot == 1 && execute_DestAddr == reg1_addr_output)
             regOp1 <= execute_Wdata;
         else if (reg1_read_enabler == 1 && memory_WriteOrNot == 1 && memory_DestAddr == reg1_addr_output)
@@ -502,8 +345,7 @@ module insDecode(
     end
 
     always @ (*) begin
-        if (rst == 1) 
-            regOp2 <= 0;
+        if (rst == 1) regOp1 = 0;
         else if (reg2_read_enabler == 1 && execute_WriteOrNot == 1 && execute_DestAddr == reg2_addr_output)
             regOp2 <= execute_Wdata;
         else if (reg2_read_enabler == 1 && memory_WriteOrNot == 1 && memory_DestAddr == reg2_addr_output)
