@@ -80,13 +80,12 @@ module execute(
                 `ALUOP_SRA: begin
                     opOut <= $signed(regOp2) >>> regOp1;
                 end
-/*                `ALUOP_SRAV: begin
+                `ALUOP_SRAV: begin
                     opOut <= $signed(regOp2) >>> regOp1;
                 end
                 `ALUOP_MOVN: begin
                     opOut <= regOp1;
                 end
-                */
                 `ALUOP_MOVZ: begin
                     opOut <= regOp1;
                 end
@@ -103,6 +102,8 @@ module execute(
             `ALUSEL_LOGIC:
                 wdata_output <= opOut;
             `ALUSEL_SHIFT:
+                wdata_output <= opOut;
+            `ALUSEL_MOVE:
                 wdata_output <= opOut;
             default:
                 wdata_output <= 0;

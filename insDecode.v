@@ -238,46 +238,39 @@ module insDecode(
                             valid <= 1;
                         end
 
-/*                        `OP_MOVN: begin
-                            imm <= insDecode_ins[20:16];
-                            if(imm != 0) begin
-                                write_or_not <= 0;
-                                aluop_output <= 0;
-                                alusel_output <= 0;
-                            end else begin
+                        `OP_MOVN: begin
+                            aluop_output <= `ALUOP_MOVN;
+                            alusel_output <=`ALUSEL_MOVE;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 1;
+                            valid <= 1;
+                            if(regOp2 != 0) begin
                                 write_or_not <= 1;
-                                aluop_output <= `ALUOP_MOVN;
-                                alusel_output <= `ALUSEL_MOVE;
-                                reg1_read_enabler <= 1;
-                                reg2_read_enabler <= 0;
-                                dest_addr <= insDecode_ins[15:11];
-                                valid <= 1;
+                            end else begin
+                                write_or_not <= 0;
                             end
                         end
                         
                         `OP_MOVZ: begin
-                            imm <= insDecode_ins[20:16];
-                            if(imm == 0) begin
-                                write_or_not <= 0;
-                                aluop_output <= 0;
-                                alusel_output <= 0;
-                            end else begin
+                            aluop_output <= `ALUOP_MOVZ;
+                            alusel_output <=`ALUSEL_MOVE;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 1;
+                            dest_addr <= insDecode_ins[15:11];
+                            valid <= 1;
+                            if(regOp2 == 0) begin
                                 write_or_not <= 1;
-                                aluop_output <= `ALUOP_MOVZ;
-                                alusel_output <= `ALUSEL_MOVE;
-                                reg1_read_enabler <= 1;
-                                reg2_read_enabler <= 0;
-                                dest_addr <= insDecode_ins[15:11];
-                                valid <= 1;
+                            end else begin
+                                write_or_not <= 0;
                             end
-                        end
-                        */
+                        end 
 
                         `OP_SLL: begin
                             if (op2 == `OP_NOP10_6) begin
                                 write_or_not <= 0;
                                 aluop_output <= `ALUOP_NOP;
                                 alusel_output <= `ALUSEL_NOP;
+                                dest_addr <= insDecode_ins[15:11];
                                 reg1_read_enabler <= 0;
                                 reg2_read_enabler <= 0;
                                 valid <= 1;
