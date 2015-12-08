@@ -9,7 +9,7 @@ z2
 cModel Technology
 Z0 dE:/HDL/MipsCPU
 vcpu
-Z1 !s110 1449538157
+Z1 !s110 1449559903
 !i10b 1
 !s100 <2E;Vc8>ESeeBVV;gHY7C1
 INGHMP<M_0TOVgP=co_]<<3
@@ -23,7 +23,7 @@ Z4 OP;L;10.4a;61
 r1
 !s85 0
 31
-Z5 !s108 1449538157.000000
+Z5 !s108 1449559903.000000
 !s107 cpu.v|
 !s90 -reportprogress|300|cpu.v|
 !s101 -O0
@@ -32,11 +32,11 @@ Z6 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
 vcpu_tb
 R1
 !i10b 1
-!s100 1TXhJAzL9F?3ZTOIi1[@02
-IS_GDL1W91BEH:WzFQdUUO1
+!s100 WdAXD]O0m_3FAOn8E5f7P1
+I?i2>N;@ib8d281GWnUaZz3
 R2
 R0
-w1449288172
+w1449538849
 8cpu_tb.v
 Fcpu_tb.v
 L0 25
@@ -51,7 +51,7 @@ R5
 !i113 1
 R6
 vexecute
-Z7 !s110 1449538156
+Z7 !s110 1449559902
 !i10b 1
 !s100 X]c0Q3;Fjj5mTIA3V<Tn92
 Ic<ncf0gaE<TbzblH2eBz:1
@@ -65,7 +65,7 @@ R4
 r1
 !s85 0
 31
-Z9 !s108 1449538156.000000
+Z9 !s108 1449559902.000000
 !s107 defineOperator.v|execute.v|
 !s90 -reportprogress|300|execute.v|
 !s101 -O0
@@ -93,7 +93,7 @@ R9
 !i113 1
 R6
 vglbl
-R1
+!s110 1449559904
 !i10b 1
 !s100 UlJ]9LUWO:ZWoRO62F9fW3
 I80=^NZZTG?D=TbEURdIK;1
@@ -107,7 +107,7 @@ R4
 r1
 !s85 0
 31
-R5
+!s108 1449559904.000000
 !s107 d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s90 -reportprogress|300|d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s101 -O0
@@ -135,13 +135,13 @@ R9
 !i113 1
 R6
 vinsDecode
-Z10 !s110 1449538155
+R7
 !i10b 1
-!s100 9ZXE74_350k0::^_dISBj3
-I_8Job6?`oJa]giW6:GV1>3
+!s100 JcUj2Q?o572n945zQ]dUf0
+I[=bZfM14ObneFHCh_Ih:b3
 R2
 R0
-w1449536234
+w1449559857
 8insDecode.v
 FinsDecode.v
 L0 24
@@ -149,7 +149,7 @@ R4
 r1
 !s85 0
 31
-Z11 !s108 1449538155.000000
+R9
 !s107 defineOperator.v|insDecode.v|
 !s90 -reportprogress|300|insDecode.v|
 !s101 -O0
@@ -157,7 +157,7 @@ Z11 !s108 1449538155.000000
 R6
 nins@decode
 vinsDecode2execute
-R10
+R7
 !i10b 1
 !s100 V4LXe3AgIZ?kaN]N9EiIB3
 IHdhRjnVo8G8BUT0nP8cgV0
@@ -171,7 +171,7 @@ R4
 r1
 !s85 0
 31
-R11
+R9
 !s107 insDecode2execute.v|
 !s90 -reportprogress|300|insDecode2execute.v|
 !s101 -O0
@@ -179,7 +179,7 @@ R11
 R6
 nins@decode2execute
 vinsFetch2insDecode
-R10
+Z10 !s110 1449559901
 !i10b 1
 !s100 ;ZjdU]zA1M9iY`f]nlAI^0
 I2LI8W8KRTXF]?l6j=`ZYV1
@@ -193,7 +193,7 @@ R4
 r1
 !s85 0
 31
-R11
+Z11 !s108 1449559901.000000
 !s107 insFetch2insDecode.v|
 !s90 -reportprogress|300|insFetch2insDecode.v|
 !s101 -O0
@@ -215,7 +215,7 @@ R4
 r1
 !s85 0
 31
-R9
+R5
 !s107 insRom.v|
 !s90 -reportprogress|300|insRom.v|
 !s101 -O0
@@ -265,7 +265,7 @@ R11
 !i113 1
 R6
 vmips
-R7
+R1
 !i10b 1
 !s100 OI>XZ@TY1=N:8i`95n1a;0
 ICJoEO=eMK3gWkb^TKW^9P2
@@ -279,7 +279,7 @@ R4
 r1
 !s85 0
 31
-R9
+R5
 !s107 mips.v|
 !s90 -reportprogress|300|mips.v|
 !s101 -O0

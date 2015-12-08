@@ -101,6 +101,21 @@ module insDecode(
             branch_target_output <= 0;
             branch_flag_output <= 0;            
             next_delay <= 0;
+        end else if (in_delayslot == 1) begin
+            aluop_output <= 0;
+            alusel_output <= 0;
+            dest_addr <= 0;
+            write_or_not <= 0;
+            valid <= 0;
+            reg1_read_enabler <= 0;
+            reg2_read_enabler <= 0;
+            reg1_addr_output <= 0;
+            reg2_addr_output <= 0;
+            imm <= 0;
+            ret_addr <= 0;
+            branch_target_output <= 0;
+            branch_flag_output <= 0;            
+            next_delay <= 0;
         end else begin
             aluop_output <= 0;
             alusel_output <= 0;
@@ -720,6 +735,5 @@ module insDecode(
         else 
             regOp2 <= imm;
     end
-
 endmodule
 
