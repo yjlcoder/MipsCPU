@@ -37,6 +37,9 @@ module execute(
     input wire[31:0] memory2writeback_HILO_HI,
     input wire[31:0] memory2writeback_HILO_LO,
 
+    input wire[31:0] ret_addr,
+    input wire in_delayslot,
+
     output reg[4:0] dest_addr_output,
     output reg write_or_not_output,
     output reg[31:0] wdata_output,
@@ -237,6 +240,8 @@ module execute(
                 wdata_output <= arch_answer;
             `ALUSEL_MUL:
                 wdata_output <= mul_result;
+            `ALUSEL_JUMP_BRANCH:
+                wdata_output <= ret_addr;
             default:
                 wdata_output <= 0;
         endcase

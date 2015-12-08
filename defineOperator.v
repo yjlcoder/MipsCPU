@@ -32,6 +32,14 @@
 `define OP_ADDIU 6'b001001
 `define OP_SLTI 6'b001010
 `define OP_SLTIU 6'b001011
+`define OP_J 6'b000010
+`define OP_JAL 6'b000011
+`define OP_BEQ 6'b000100
+`define OP_BGTZ 6'b000111
+`define OP_BLEZ 6'b000110
+`define OP_BNE 6'b000101
+
+`define OP_REGIMM 6'b000001
 
 //¹¦ÄÜÂë
 //000000
@@ -65,6 +73,9 @@
 `define OP_MULT 6'b011000
 `define OP_MULTU 6'b011001
 
+`define OP_JR 6'b001000
+`define OP_JALR 6'b001001
+
 //011100
 `define OP_CLZ 6'b100000
 `define OP_CLO 6'b100001
@@ -73,6 +84,12 @@
 //10_6
 `define OP_NOP10_6 5'b00000
 `define OP_SSNOP10_6 5'b00001
+
+//20_16
+`define OP_BLTZ 5'b00000
+`define OP_BLTZAL 5'b10000
+`define OP_BGEZ 5'b00001
+`define OP_BGEZAL 5'b10001
 
 /* aluop */
 `define ALUOP_AND 8'b0010_0100
@@ -114,6 +131,19 @@
 `define ALUOP_MULTU  8'b00011001
 `define ALUOP_MUL  8'b10101001
 
+`define ALUOP_J  8'b01001111
+`define ALUOP_JAL  8'b01010000
+`define ALUOP_JALR  8'b00001001
+`define ALUOP_JR  8'b00001000
+`define ALUOP_BEQ  8'b01010001
+`define ALUOP_BGEZ  8'b01000001
+`define ALUOP_BGEZAL  8'b01001011
+`define ALUOP_BGTZ  8'b01010100
+`define ALUOP_BLEZ  8'b01010011
+`define ALUOP_BLTZ  8'b01000000
+`define ALUOP_BLTZAL  8'b01001010
+`define ALUOP_BNE  8'b01010010
+
 `define ALUOP_NOP 8'b0000_0000
 
 /* alusel */
@@ -122,4 +152,5 @@
 `define ALUSEL_MOVE 3'b011
 `define ALUSEL_ARCH 3'b100
 `define ALUSEL_MUL 3'b101
+`define ALUSEL_JUMP_BRANCH 3'b110
 `define ALUSEL_NOP 3'b000

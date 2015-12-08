@@ -21,14 +21,25 @@
 module pc_module(
 	input clk, //clock
 	input rst,
+
+    /* Branch */
+    input branch_flag,
+    input wire[31:0] branch_target,
+
 	output reg[31:0] pc,
 	output reg ce
     );
 
     always @ (posedge clk) fork
-        if (rst == 1) ce <= 0;
-        else ce <= 1;
-        if (ce == 0) pc <= 0;
-        else pc <= pc + 4;
+        if (rst == 1)
+            ce <= 0;
+        else 
+            ce <= 1;
+        if (ce == 0)
+            pc <= 0;
+        else if (branch_flag == 1)
+            pc <= branch_target;
+        else
+            pc <= pc + 4;
     join
 endmodule

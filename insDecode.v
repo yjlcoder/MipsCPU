@@ -55,7 +55,17 @@ module insDecode(
     output reg[31:0] regOp1,
     output reg[31:0] regOp2,
     output reg[4:0] dest_addr,
-    output reg write_or_not
+    output reg write_or_not,
+
+    /*(branch)*/
+    input in_delayslot,
+    //TO PC
+    output reg branch_flag_output,
+    output reg [31:0] branch_target_output,
+    //TO execute
+    output reg in_delayslot_output,
+    output reg next_delay,
+    output reg [31:0] ret_addr
     );
 
     reg valid;
@@ -65,6 +75,14 @@ module insDecode(
     wire[4:0] op2 = insDecode_ins[10:6]; //NOP & SSNOP
     wire[5:0] op3 = insDecode_ins[5:0]; // ¹¦ÄÜÂë
     wire[4:0] op4 = insDecode_ins[20:16]; 
+
+    wire[31:0] pc_8;
+    wire[31:0] pc_4;
+    wire[31:0] imm_sll2_signedext;
+
+    assign pc_8 = insDecode_pc + 8;
+    assign pc_4 = insDecode_pc + 4;
+    assign imm_sll2_signedext = {{14{insDecode_ins[15]}}, insDecode_ins[15:0], 2'b00};
 
     /* Decode */
     always @ (*) begin
@@ -79,6 +97,10 @@ module insDecode(
             reg1_addr_output <= 0;
             reg2_addr_output <= 0;
             imm <= 0;
+            ret_addr <= 0;
+            branch_target_output <= 0;
+            branch_flag_output <= 0;            
+            next_delay <= 0;
         end else begin
             aluop_output <= 0;
             alusel_output <= 0;
@@ -90,6 +112,10 @@ module insDecode(
             reg1_addr_output <= insDecode_ins[25:21];
             reg2_addr_output <= insDecode_ins[20:16];
             imm <= 0;
+            ret_addr <= 0;
+            branch_target_output <= 0;
+            branch_flag_output <= 0;            
+            next_delay <= 0;
             case(op1)
                 `OP_ORI: begin
                     write_or_not <= 1;
@@ -191,7 +217,153 @@ module insDecode(
                     valid <= 1;
                 end
 
+                `OP_J: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_J;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 0;
+                    reg2_read_enabler <= 0;
+                    ret_addr <= 0;
+                    branch_flag_output <= 1;
+                    next_delay <= 1;
+                    valid <= 1;
+                    branch_target_output <= {pc_4[31:28], insDecode_ins[25:0], 2'b00};
+                end
 
+                `OP_JAL: begin
+                    write_or_not <= 1;
+                    dest_addr <= 5'b11111;
+                    aluop_output <= `ALUOP_JAL;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 0;
+                    reg2_read_enabler <= 0;
+                    ret_addr <= pc_8;
+                    branch_flag_output <= 1;
+                    next_delay <= 1;
+                    valid <= 1;
+                    branch_target_output <= {pc_4[31:28], insDecode_ins[25:0], 2'b00};
+                end
+
+                `OP_BEQ: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_BEQ;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                    valid <= 1;
+                    if(regOp1 == regOp2) begin
+                        branch_target_output <= pc_4 + imm_sll2_signedext;
+                        branch_flag_output <= 1;
+                        next_delay <= 1;
+                    end
+                end
+
+                `OP_BGTZ: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_BGTZ;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    valid <= 1;
+                    if(regOp1[31] == 0 && regOp1 != 0) begin
+                        branch_target_output <= pc_4 + imm_sll2_signedext;
+                        branch_flag_output <= 1;
+                        next_delay <= 1;
+                    end
+                end
+
+                `OP_BLEZ: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_BLEZ;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    valid <= 1;
+                    if(regOp1[31] == 1 && regOp1 == 0) begin
+                        branch_target_output <= pc_4 + imm_sll2_signedext;
+                        branch_flag_output <= 1;
+                        next_delay <= 1;
+                    end
+                end
+
+                `OP_BNE: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_BLEZ;
+                    alusel_output <= `ALUSEL_JUMP_BRANCH;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                    valid <= 1;
+                    if(regOp1 != regOp2) begin
+                        branch_target_output <= pc_4 + imm_sll2_signedext;
+                        branch_flag_output <= 1;
+                        next_delay <= 1;
+                    end
+                end
+
+                `OP_REGIMM: begin
+                    case(op4)
+                        `OP_BGEZ: begin
+                            write_or_not <= 0;
+                            aluop_output <= `ALUOP_BGEZ;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            valid <= 1;
+                            if(regOp1[31] == 0) begin
+                                branch_target_output <= pc_4 + imm_sll2_signedext;
+                                branch_flag_output <= 1;
+                                next_delay <= 1;
+                            end
+                        end
+
+                        `OP_BGEZAL: begin
+                            write_or_not <= 1;
+                            dest_addr <= 5'b11111;
+                            aluop_output <= `ALUOP_BGEZAL;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            ret_addr <= pc_8;
+                            valid <= 1;
+                            if(regOp1[31] == 0) begin
+                                branch_target_output <= pc_4 + imm_sll2_signedext;
+                                branch_flag_output <= 1;
+                                next_delay <= 1;
+                            end
+                        end
+
+                        `OP_BLTZ : begin
+                            write_or_not <= 0;
+                            aluop_output <= `ALUOP_BGEZAL;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            ret_addr <= pc_8;
+                            valid <= 1;
+                            if(regOp1[31] == 1) begin
+                                branch_target_output <= pc_4 + imm_sll2_signedext;
+                                branch_flag_output <= 1;
+                                next_delay <= 1;
+                            end
+                        end
+
+                        `OP_BLTZAL : begin
+                            write_or_not <= 1;
+                            dest_addr <= 5'b11111;
+                            aluop_output <= `ALUOP_BGEZAL;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            ret_addr <= pc_8;
+                            valid <= 1;
+                            if(regOp1[31] == 1) begin
+                                branch_target_output <= pc_4 + imm_sll2_signedext;
+                                branch_flag_output <= 1;
+                                next_delay <= 1;
+                            end
+                        end
+                    endcase
+                end
                 `OP_SPECIAL: begin
                     case (op3)
                         `OP_AND: begin
@@ -430,6 +602,33 @@ module insDecode(
                             valid <= 1;
                         end
 
+                        `OP_JR: begin
+                            write_or_not <= 0;
+                            aluop_output <= `ALUOP_JR;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            ret_addr <= 0;
+                            branch_target_output <= regOp1;
+                            branch_flag_output <= 1;
+                            next_delay <= 1;
+                            valid <= 1;
+                        end
+
+                        `OP_JALR: begin
+                            write_or_not <= 1;
+                            aluop_output <= `ALUOP_JALR;
+                            alusel_output <= `ALUSEL_JUMP_BRANCH;
+                            reg1_read_enabler <= 1;
+                            reg2_read_enabler <= 0;
+                            dest_addr <= insDecode_ins[15:11];
+                            ret_addr <= pc_8;
+                            branch_target_output <= regOp1;
+                            branch_flag_output <= 1;
+                            next_delay <= 1;
+                            valid <= 1;
+                        end
+
                         `OP_SLL: begin
                             if (op2 == `OP_NOP10_6) begin
                                 write_or_not <= 0;
@@ -487,6 +686,14 @@ module insDecode(
             endcase
         end
     end
+
+    always @ (*) begin
+        if (rst == 1)
+            in_delayslot_output <= 0;
+        else
+            in_delayslot_output <= in_delayslot;
+    end
+
 
     always @ (*) begin
         if (rst == 1)

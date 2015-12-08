@@ -104,11 +104,25 @@ module mips(
     wire [31:0] hilo_HI;
     wire [31:0] hilo_LO;
 
+    /* JUMP & BRANCH */
+    wire [31:0] insDecode2pc_branchTargetAddr;
+    wire insDecode2pc_branchFlag;
+
+    wire [31:0] insDecode_retAddr;
+    wire insDecode_inDelayslot;
+    wire insDecode_nextDelay;
+
+    wire insDecode2execute_executeInDelayslot;
+    wire [31:0] insDecode2execute_retAddr;
+    wire insDecode2execute_insDecodeInDelayslot;
+
     assign addr_output = pc;
 
     pc_module pc_module0(
         .clk(clk),
         .rst(rst),
+        .branch_flag(insDecode2pc_branchFlag),
+        .branch_target(insDecode2pc_branchTargetAddr),
         .pc(pc),
         .ce(enabler_output)
     );
@@ -129,7 +143,12 @@ module mips(
         .reg1_addr_output(reg1Addr), .reg2_addr_output(reg2Addr),
         .aluop_output(InsDecode_Aluop), .alusel_output(InsDecode_Alusel),
         .regOp1(InsDecode_Reg1), .regOp2(InsDecode_Reg2),
-        .dest_addr(InsDecode_DestAddr), .write_or_not(InsDecode_WriteOrNot)
+        .dest_addr(InsDecode_DestAddr), .write_or_not(InsDecode_WriteOrNot),
+        .in_delayslot(insDecode2execute_insDecodeInDelayslot),
+        .branch_flag_output(insDecode2pc_branchFlag),
+        .branch_target_output(insDecode2pc_branchTargetAddr),
+        .ret_addr(insDecode_retAddr), .next_delay(insDecode_nextDelay),
+        .in_delayslot_output(insDecode_inDelayslot)
     );
 
     insDecode2execute insDecode2execute0(
@@ -139,7 +158,11 @@ module mips(
         .dest_addr(InsDecode_DestAddr), .write_or_not(InsDecode_WriteOrNot),
         .aluop_output(InsDecode2execute_aluop), .alusel_output(InsDecode2execute_alusel),
         .regOp1_output(InsDecode2execute_Reg1), .regOp2_output(InsDecode2execute_Reg2),
-        .dest_addr_output(InsDecode2execute_DestAddr), .write_or_not_output(InsDecode2execute_WriteOrNot)
+        .dest_addr_output(InsDecode2execute_DestAddr), .write_or_not_output(InsDecode2execute_WriteOrNot),
+        .in_delayslot(insDecode_inDelayslot), .ret_addr(insDecode_retAddr), .next_delay(insDecode_nextDelay),
+        .execute_in_delayslot(insDecode2execute_executeInDelayslot),
+        .ret_addr_output(insDecode2execute_retAddr),
+        .insDecode_in_delayslot(insDecode2execute_insDecodeInDelayslot)
     );
 
     execute execute0(
@@ -153,7 +176,9 @@ module mips(
         .memory2writeback_HILO_LO(memory2writeback_HILO_LO),
         .dest_addr_output(execute_DestAddr), .write_or_not_output(execute_WriteOrNot),
         .wdata_output(execute_Wdata),
-        .execute_HILO_enabler(execute_HILO_enabler),.execute_HILO_HI(execute_HILO_HI), .execute_HILO_LO(execute_HILO_LO)
+        .execute_HILO_enabler(execute_HILO_enabler),.execute_HILO_HI(execute_HILO_HI), .execute_HILO_LO(execute_HILO_LO),
+        .in_delayslot(insDecode2execute_executeInDelayslot),
+        .ret_addr(insDecode2execute_retAddr)
     );
 
     execute2memory execute2memory0(
