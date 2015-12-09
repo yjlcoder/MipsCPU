@@ -30,16 +30,19 @@ module pc_module(
 	output reg ce
     );
 
-    always @ (posedge clk) fork
+    always @ (posedge clk) begin
         if (rst == 1)
             ce <= 0;
-        else 
+        else
             ce <= 1;
+    end
+
+    always @ (posedge clk) begin
         if (ce == 0)
             pc <= 0;
         else if (branch_flag == 1)
             pc <= branch_target;
         else
             pc <= pc + 4;
-    join
+    end
 endmodule

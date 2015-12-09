@@ -23,7 +23,14 @@ module mips(
     input clk,
     input wire[31:0] ins_input,
     output wire[31:0] addr_output,
-    output enabler_output
+    output enabler_output,
+
+    input wire[31:0] ram_data,
+    output wire[31:0] ram_addr_output,
+    output wire ram_write_enabler_output,
+    output wire[3:0] ram_select_output,
+    output wire[31:0] ram_data_output,
+    output wire ram_enabler
     );
 
 
@@ -116,6 +123,15 @@ module mips(
     wire [31:0] insDecode2execute_retAddr;
     wire insDecode2execute_insDecodeInDelayslot;
 
+    wire [31:0] insDecode_ins;
+    wire [31:0] insDecode2execute_ins;
+    wire [7:0] execute_aluop;
+    wire [31:0] execute_mem_addr;
+    wire [31:0] execute_regOp2;
+    wire [7:0] execute2memory_aluop;
+    wire [31:0] execute2memory_mem_addr;
+    wire [31:0] execute2memory_regOp2;
+
     assign addr_output = pc;
 
     pc_module pc_module0(
@@ -148,7 +164,8 @@ module mips(
         .branch_flag_output(insDecode2pc_branchFlag),
         .branch_target_output(insDecode2pc_branchTargetAddr),
         .ret_addr(insDecode_retAddr), .next_delay(insDecode_nextDelay),
-        .in_delayslot_output(insDecode_inDelayslot)
+        .in_delayslot_output(insDecode_inDelayslot),
+        .insDecode_ins_output(insDecode_ins)
     );
 
     insDecode2execute insDecode2execute0(
@@ -162,23 +179,47 @@ module mips(
         .in_delayslot(insDecode_inDelayslot), .ret_addr(insDecode_retAddr), .next_delay(insDecode_nextDelay),
         .execute_in_delayslot(insDecode2execute_executeInDelayslot),
         .ret_addr_output(insDecode2execute_retAddr),
-        .insDecode_in_delayslot(insDecode2execute_insDecodeInDelayslot)
+        .insDecode_in_delayslot(insDecode2execute_insDecodeInDelayslot),
+        .insDecode_ins(insDecode_ins),
+        .insDecode2execute_ins(insDecode2execute_ins)
     );
 
     execute execute0(
         .rst(rst),
-        .aluop_input(InsDecode2execute_aluop), .alusel_input(InsDecode2execute_alusel),
-        .regOp1(InsDecode2execute_Reg1), .regOp2(InsDecode2execute_Reg2),
-        .dest_addr(InsDecode2execute_DestAddr), .write_or_not(InsDecode2execute_WriteOrNot),
-        .memory_HILO_enabler(memory_HILO_enabler), .memory_HILO_HI(memory_HILO_HI), .memory_HILO_LO(memory_HILO_LO),
+
+        .aluop_input(InsDecode2execute_aluop),
+        .alusel_input(InsDecode2execute_alusel),
+        .regOp1(InsDecode2execute_Reg1),
+        .regOp2(InsDecode2execute_Reg2),
+        .dest_addr(InsDecode2execute_DestAddr),
+        .write_or_not(InsDecode2execute_WriteOrNot),
+
+        .memory_HILO_enabler(memory_HILO_enabler),
+        .memory_HILO_HI(memory_HILO_HI),
+        .memory_HILO_LO(memory_HILO_LO),
+        
+        .hilo0_HILO_HI(hilo_HI),
+        .hilo0_HILO_LO(hilo_LO),
+
+        .dest_addr_output(execute_DestAddr),
+        .write_or_not_output(execute_WriteOrNot),
+        .wdata_output(execute_Wdata),
+
         .memory2writeback_HILO_enabler(memory2writeback_HILO_enabler),
         .memory2writeback_HILO_HI(memory2writeback_HILO_HI),
         .memory2writeback_HILO_LO(memory2writeback_HILO_LO),
-        .dest_addr_output(execute_DestAddr), .write_or_not_output(execute_WriteOrNot),
-        .wdata_output(execute_Wdata),
-        .execute_HILO_enabler(execute_HILO_enabler),.execute_HILO_HI(execute_HILO_HI), .execute_HILO_LO(execute_HILO_LO),
+
+        .ret_addr(insDecode2execute_retAddr),
         .in_delayslot(insDecode2execute_executeInDelayslot),
-        .ret_addr(insDecode2execute_retAddr)
+
+        .execute_HILO_enabler(execute_HILO_enabler),
+        .execute_HILO_HI(execute_HILO_HI),
+        .execute_HILO_LO(execute_HILO_LO),
+
+        .insDecode2execute_ins(insDecode2execute_ins),
+        .aluop_output(execute_aluop),
+        .mem_addr_output(execute_mem_addr),
+        .regOp2_output(execute_regOp2)
     );
 
     execute2memory execute2memory0(
@@ -192,21 +233,42 @@ module mips(
         .wdata_output(execute2memory_Wdata),
         .execute2memory_HILO_enabler(execute2memory_HILO_enabler),
         .execute2memory_HILO_HI(execute2memory_HILO_HI),
-        .execute2memory_HILO_LO(execute2memory_HILO_LO)
+        .execute2memory_HILO_LO(execute2memory_HILO_LO),
+        .aluop(execute_aluop),
+        .mem_addr(execute_mem_addr),
+        .regOp2(execute_regOp2),
+        .aluop_output(execute2memory_aluop),
+        .mem_addr_output(execute2memory_mem_addr),
+        .regOp2_output(execute2memory_regOp2)
     );
 
     memory memory0(
         .rst(rst),
-        .dest_addr(execute2memory_DestAddr), .write_or_not(execute2memory_WriteOrNot),
+        .dest_addr(execute2memory_DestAddr),
+        .write_or_not(execute2memory_WriteOrNot),
         .wdata(execute2memory_Wdata),
+
         .execute2memory_HILO_enabler(execute2memory_HILO_enabler),
         .execute2memory_HILO_HI(execute2memory_HILO_HI),
         .execute2memory_HILO_LO(execute2memory_HILO_LO),
-        .dest_addr_output(memory_DestAddr), .write_or_not_output(memory_WriteOrNot),
+
+        .dest_addr_output(memory_DestAddr), 
+        .write_or_not_output(memory_WriteOrNot),
         .wdata_output(memory_Wdata),
+
         .memory_HILO_enabler(memory_HILO_enabler),
         .memory_HILO_HI(memory_HILO_HI),
-        .memory_HILO_LO(memory_HILO_LO)
+        .memory_HILO_LO(memory_HILO_LO),
+
+        .aluop(execute2memory_aluop),
+        .mem_addr(execute2memory_mem_addr),
+        .regOp2(execute2memory_regOp2),
+        .mem_data(ram_data),
+        .mem_data_output(ram_data_output),
+        .mem_addr_output(ram_addr_output),
+        .mem_write_enabler_output(ram_write_enabler_output),
+        .mem_select_output(ram_select_output),
+        .mem_enabler_output(ram_enabler)
     );
 
     memory2writeback memory2writeback0(

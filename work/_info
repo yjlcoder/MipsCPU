@@ -9,13 +9,13 @@ z2
 cModel Technology
 Z0 dE:/HDL/MipsCPU
 vcpu
-Z1 !s110 1449559903
+Z1 !s110 1449624565
 !i10b 1
-!s100 <2E;Vc8>ESeeBVV;gHY7C1
-INGHMP<M_0TOVgP=co_]<<3
+!s100 ObGC2II]6HVMQADW8f^bg3
+I;PRe0ZmWI5oIZIzB4;fd`2
 Z2 VDg1SIo80bB@j0V0VzS_@n1
 R0
-w1449288131
+w1449593629
 8cpu.v
 Fcpu.v
 Z3 L0 21
@@ -23,7 +23,7 @@ Z4 OP;L;10.4a;61
 r1
 !s85 0
 31
-Z5 !s108 1449559903.000000
+Z5 !s108 1449624565.000000
 !s107 cpu.v|
 !s90 -reportprogress|300|cpu.v|
 !s101 -O0
@@ -32,11 +32,11 @@ Z6 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
 vcpu_tb
 R1
 !i10b 1
-!s100 WdAXD]O0m_3FAOn8E5f7P1
-I?i2>N;@ib8d281GWnUaZz3
+!s100 5S?NPGj`hHaC0ni@55@hN1
+I<746aGeJWY`HMjIL>N?eF3
 R2
 R0
-w1449538849
+w1449623265
 8cpu_tb.v
 Fcpu_tb.v
 L0 25
@@ -51,13 +51,13 @@ R5
 !i113 1
 R6
 vexecute
-Z7 !s110 1449559902
+Z7 !s110 1449624564
 !i10b 1
-!s100 X]c0Q3;Fjj5mTIA3V<Tn92
-Ic<ncf0gaE<TbzblH2eBz:1
+!s100 zo?ne_YDZhjhG>A6fYW8c2
+ICi08n?:dcAD9?02G<5ml<0
 R2
 R0
-w1449534339
+w1449583555
 8execute.v
 Fexecute.v
 Z8 L0 22
@@ -65,7 +65,7 @@ R4
 r1
 !s85 0
 31
-Z9 !s108 1449559902.000000
+Z9 !s108 1449624564.000000
 !s107 defineOperator.v|execute.v|
 !s90 -reportprogress|300|execute.v|
 !s101 -O0
@@ -74,11 +74,11 @@ R6
 vexecute2memory
 R7
 !i10b 1
-!s100 e=;k7o>TnlWO_@l5jP=RI2
-IMD?UKINXc`5@6d?YzKjhm0
+!s100 jOn`:MU_i9_H;Yc6m^]d@0
+IIY`mJ95J=F@=cM<dKbZN`1
 R2
 R0
-w1449454753
+w1449561701
 8execute2memory.v
 Fexecute2memory.v
 R3
@@ -93,7 +93,7 @@ R9
 !i113 1
 R6
 vglbl
-!s110 1449559904
+R1
 !i10b 1
 !s100 UlJ]9LUWO:ZWoRO62F9fW3
 I80=^NZZTG?D=TbEURdIK;1
@@ -107,7 +107,7 @@ R4
 r1
 !s85 0
 31
-!s108 1449559904.000000
+R5
 !s107 d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s90 -reportprogress|300|d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s101 -O0
@@ -137,11 +137,11 @@ R6
 vinsDecode
 R7
 !i10b 1
-!s100 JcUj2Q?o572n945zQ]dUf0
-I[=bZfM14ObneFHCh_Ih:b3
+!s100 T<]oLf8bUFa@AIUDi7@_`3
+IT_RgQbg>]>:]Q6U>9SBnf0
 R2
 R0
-w1449559857
+w1449561528
 8insDecode.v
 FinsDecode.v
 L0 24
@@ -157,13 +157,13 @@ R9
 R6
 nins@decode
 vinsDecode2execute
-R7
+Z10 !s110 1449624563
 !i10b 1
-!s100 V4LXe3AgIZ?kaN]N9EiIB3
-IHdhRjnVo8G8BUT0nP8cgV0
+!s100 AP@MFJRKWgZ`fMf4bVBhX3
+IBUDTiNSg@oki^D^72bQHj3
 R2
 R0
-w1449535655
+w1449561520
 8insDecode2execute.v
 FinsDecode2execute.v
 R3
@@ -171,7 +171,7 @@ R4
 r1
 !s85 0
 31
-R9
+Z11 !s108 1449624563.000000
 !s107 insDecode2execute.v|
 !s90 -reportprogress|300|insDecode2execute.v|
 !s101 -O0
@@ -179,7 +179,7 @@ R9
 R6
 nins@decode2execute
 vinsFetch2insDecode
-Z10 !s110 1449559901
+R10
 !i10b 1
 !s100 ;ZjdU]zA1M9iY`f]nlAI^0
 I2LI8W8KRTXF]?l6j=`ZYV1
@@ -193,7 +193,7 @@ R4
 r1
 !s85 0
 31
-Z11 !s108 1449559901.000000
+R11
 !s107 insFetch2insDecode.v|
 !s90 -reportprogress|300|insFetch2insDecode.v|
 !s101 -O0
@@ -207,7 +207,7 @@ R1
 IS=`L^aggUHbjPLR12_QM^3
 R2
 R0
-w1449494833
+w1449593162
 8insRom.v
 FinsRom.v
 R3
@@ -215,7 +215,7 @@ R4
 r1
 !s85 0
 31
-R5
+R9
 !s107 insRom.v|
 !s90 -reportprogress|300|insRom.v|
 !s101 -O0
@@ -225,20 +225,20 @@ ninst@rom
 vmemory
 R10
 !i10b 1
-!s100 n@<]FaEcSY`<cOPhc@k8=1
-I:]9?NA7BeAG;_Na;RUE^12
+!s100 h^i2;MfG7VB`kVa_5^ioo1
+IUKLaZK=S<gDjz]0faJFg81
 R2
 R0
-w1449455108
+w1449594081
 8memory.v
 Fmemory.v
-R3
+R8
 R4
 r1
 !s85 0
 31
 R11
-!s107 memory.v|
+!s107 defineOperator.v|memory.v|
 !s90 -reportprogress|300|memory.v|
 !s101 -O0
 !i113 1
@@ -265,13 +265,13 @@ R11
 !i113 1
 R6
 vmips
-R1
+R7
 !i10b 1
-!s100 OI>XZ@TY1=N:8i`95n1a;0
-ICJoEO=eMK3gWkb^TKW^9P2
+!s100 am1n;ez2`Gm_<60^H55ZD0
+IZDfO:?A1a6D^XNOV>DKz42
 R2
 R0
-w1449536338
+w1449621572
 8mips.v
 Fmips.v
 R3
@@ -279,7 +279,7 @@ R4
 r1
 !s85 0
 31
-R5
+R9
 !s107 mips.v|
 !s90 -reportprogress|300|mips.v|
 !s101 -O0
@@ -306,14 +306,35 @@ R11
 !s101 -O0
 !i113 1
 R6
-vregfile
-R10
+vram
+R7
 !i10b 1
-!s100 iZlR_Oh8?hoB]ThhMaM;l1
-IFBU8KASL>Ae>g>RO_Hnj:2
+!s100 1T5R:DXO4`bM7lkl?YelL2
+II5>ah56C=X5H_l8FeAdJc1
 R2
 R0
-w1449387833
+w1449593714
+8ram.v
+Fram.v
+R3
+R4
+r1
+!s85 0
+31
+R9
+!s107 ram.v|
+!s90 -reportprogress|300|ram.v|
+!s101 -O0
+!i113 1
+R6
+vregfile
+!s110 1449624562
+!i10b 1
+!s100 W`D4H?fYzG4X?k3F`EZMA1
+IAf^JYBz=DFb2K4eACLOnH3
+R2
+R0
+w1449623064
 8regfile.v
 Fregfile.v
 R3
@@ -321,7 +342,7 @@ R4
 r1
 !s85 0
 31
-R11
+!s108 1449624562.000000
 !s107 regfile.v|
 !s90 -reportprogress|300|regfile.v|
 !s101 -O0

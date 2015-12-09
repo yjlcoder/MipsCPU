@@ -65,10 +65,12 @@ module insDecode(
     //TO execute
     output reg in_delayslot_output,
     output reg next_delay,
-    output reg [31:0] ret_addr
+    output reg [31:0] ret_addr,
+
+    /* ram */
+    output wire[31:0] insDecode_ins_output
     );
 
-    reg valid;
     reg [31:0] imm;
 
     wire[5:0] op1 = insDecode_ins[31:26]; //÷∏¡Ó¬Î
@@ -83,6 +85,7 @@ module insDecode(
     assign pc_8 = insDecode_pc + 8;
     assign pc_4 = insDecode_pc + 4;
     assign imm_sll2_signedext = {{14{insDecode_ins[15]}}, insDecode_ins[15:0], 2'b00};
+    assign insDecode_ins_output = insDecode_ins;
 
     /* Decode */
     always @ (*) begin
@@ -91,7 +94,6 @@ module insDecode(
             alusel_output <= 0;
             dest_addr <= 0;
             write_or_not <= 0;
-            valid <= 0;
             reg1_read_enabler <= 0;
             reg2_read_enabler <= 0;
             reg1_addr_output <= 0;
@@ -106,7 +108,6 @@ module insDecode(
             alusel_output <= 0;
             dest_addr <= 0;
             write_or_not <= 0;
-            valid <= 0;
             reg1_read_enabler <= 0;
             reg2_read_enabler <= 0;
             reg1_addr_output <= 0;
@@ -121,7 +122,6 @@ module insDecode(
             alusel_output <= 0;
             dest_addr <= insDecode_ins[15:11];
             write_or_not <= 0;
-            valid <= 0;
             reg1_read_enabler <= 0;
             reg2_read_enabler <= 0;
             reg1_addr_output <= insDecode_ins[25:21];
@@ -140,7 +140,6 @@ module insDecode(
                     reg2_read_enabler <= 0;
                     imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_ANDI: begin
@@ -151,7 +150,6 @@ module insDecode(
                     reg2_read_enabler <= 0;
                     imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_XORI: begin
@@ -162,7 +160,6 @@ module insDecode(
                     reg2_read_enabler <= 0;
                     imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
                     
                 `OP_LUI: begin
@@ -173,7 +170,6 @@ module insDecode(
                     reg2_read_enabler <= 0;
                     imm <= {insDecode_ins[15:0], 16'b0};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_ADDI: begin
@@ -187,7 +183,6 @@ module insDecode(
                     else
                         imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_ADDIU: begin
@@ -201,7 +196,6 @@ module insDecode(
                     else
                         imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_SLTI: begin
@@ -215,7 +209,6 @@ module insDecode(
                     else
                         imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_SLTIU: begin
@@ -229,7 +222,6 @@ module insDecode(
                     else
                         imm <= {16'b0, insDecode_ins[15:0]};
                     dest_addr <= insDecode_ins[20:16];
-                    valid <= 1;
                 end
 
                 `OP_J: begin
@@ -241,7 +233,6 @@ module insDecode(
                     ret_addr <= 0;
                     branch_flag_output <= 1;
                     next_delay <= 1;
-                    valid <= 1;
                     branch_target_output <= {pc_4[31:28], insDecode_ins[25:0], 2'b00};
                 end
 
@@ -255,7 +246,6 @@ module insDecode(
                     ret_addr <= pc_8;
                     branch_flag_output <= 1;
                     next_delay <= 1;
-                    valid <= 1;
                     branch_target_output <= {pc_4[31:28], insDecode_ins[25:0], 2'b00};
                 end
 
@@ -265,7 +255,6 @@ module insDecode(
                     alusel_output <= `ALUSEL_JUMP_BRANCH;
                     reg1_read_enabler <= 1;
                     reg2_read_enabler <= 1;
-                    valid <= 1;
                     if(regOp1 == regOp2) begin
                         branch_target_output <= pc_4 + imm_sll2_signedext;
                         branch_flag_output <= 1;
@@ -279,7 +268,6 @@ module insDecode(
                     alusel_output <= `ALUSEL_JUMP_BRANCH;
                     reg1_read_enabler <= 1;
                     reg2_read_enabler <= 0;
-                    valid <= 1;
                     if(regOp1[31] == 0 && regOp1 != 0) begin
                         branch_target_output <= pc_4 + imm_sll2_signedext;
                         branch_flag_output <= 1;
@@ -293,7 +281,6 @@ module insDecode(
                     alusel_output <= `ALUSEL_JUMP_BRANCH;
                     reg1_read_enabler <= 1;
                     reg2_read_enabler <= 0;
-                    valid <= 1;
                     if(regOp1[31] == 1 && regOp1 == 0) begin
                         branch_target_output <= pc_4 + imm_sll2_signedext;
                         branch_flag_output <= 1;
@@ -307,12 +294,114 @@ module insDecode(
                     alusel_output <= `ALUSEL_JUMP_BRANCH;
                     reg1_read_enabler <= 1;
                     reg2_read_enabler <= 1;
-                    valid <= 1;
                     if(regOp1 != regOp2) begin
                         branch_target_output <= pc_4 + imm_sll2_signedext;
                         branch_flag_output <= 1;
                         next_delay <= 1;
                     end
+                end
+                
+                `OP_LB: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LB;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LBU: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LBU;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LH: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LH;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LHU: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LHU;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LW: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LW;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 0;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LWL: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LWL;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_LWR: begin
+                    write_or_not <= 1;
+                    aluop_output <= `ALUOP_LWR;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                    dest_addr <= insDecode_ins[20:16];
+                end
+
+                `OP_SB: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_SB;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                end
+
+                `OP_SH: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_SH;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                end
+
+                `OP_SW: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_SW;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                end
+
+                `OP_SWL: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_SWL;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
+                end
+
+                `OP_SWR: begin
+                    write_or_not <= 0;
+                    aluop_output <= `ALUOP_SWR;
+                    alusel_output <= `ALUSEL_SL;
+                    reg1_read_enabler <= 1;
+                    reg2_read_enabler <= 1;
                 end
 
                 `OP_REGIMM: begin
@@ -323,7 +412,6 @@ module insDecode(
                             alusel_output <= `ALUSEL_JUMP_BRANCH;
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
-                            valid <= 1;
                             if(regOp1[31] == 0) begin
                                 branch_target_output <= pc_4 + imm_sll2_signedext;
                                 branch_flag_output <= 1;
@@ -339,7 +427,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             ret_addr <= pc_8;
-                            valid <= 1;
                             if(regOp1[31] == 0) begin
                                 branch_target_output <= pc_4 + imm_sll2_signedext;
                                 branch_flag_output <= 1;
@@ -354,7 +441,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             ret_addr <= pc_8;
-                            valid <= 1;
                             if(regOp1[31] == 1) begin
                                 branch_target_output <= pc_4 + imm_sll2_signedext;
                                 branch_flag_output <= 1;
@@ -370,7 +456,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             ret_addr <= pc_8;
-                            valid <= 1;
                             if(regOp1[31] == 1) begin
                                 branch_target_output <= pc_4 + imm_sll2_signedext;
                                 branch_flag_output <= 1;
@@ -388,7 +473,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_OR: begin
@@ -398,7 +482,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_XOR: begin
@@ -408,7 +491,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_NOR: begin
@@ -418,7 +500,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_SRL: begin
@@ -429,7 +510,6 @@ module insDecode(
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
                             imm <= op2;
-                            valid <= 1;
                         end
 
                         `OP_SRA: begin
@@ -440,7 +520,6 @@ module insDecode(
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
                             imm <= op2;
-                            valid <= 1;
                         end
 
                         `OP_SLLV: begin
@@ -450,7 +529,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_SRLV: begin
@@ -460,7 +538,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             imm <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_SRAV: begin
@@ -470,7 +547,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             imm <= insDecode_ins[15:11];
-                            valid <= 1;
                         end
 
                         `OP_SYNC: begin
@@ -479,7 +555,6 @@ module insDecode(
                             alusel_output <= `ALUSEL_NOP;
                             reg1_read_enabler <= 0;
                             reg2_read_enabler <= 1;
-                            valid <= 1;
                         end
 
                         `OP_MOVN: begin
@@ -487,7 +562,6 @@ module insDecode(
                             alusel_output <=`ALUSEL_MOVE;
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
-                            valid <= 1;
                             if(regOp2 != 0) begin
                                 write_or_not <= 1;
                             end else begin
@@ -501,7 +575,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             dest_addr <= insDecode_ins[15:11];
-                            valid <= 1;
                             if(regOp2 == 0) begin
                                 write_or_not <= 1;
                             end else begin
@@ -515,7 +588,6 @@ module insDecode(
                             reg1_read_enabler <= 0;
                             reg2_read_enabler <= 0;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_MFLO:begin
@@ -524,7 +596,6 @@ module insDecode(
                             reg1_read_enabler <= 0;
                             reg2_read_enabler <= 0;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_MTHI:begin
@@ -533,7 +604,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             write_or_not <= 0;
-                            valid <= 1;
                         end
 
                         `OP_MTLO:begin
@@ -542,7 +612,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             write_or_not <= 0;
-                            valid <= 1;
                         end
 
                         `OP_ADD:begin
@@ -551,7 +620,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_ADDU: begin
@@ -560,7 +628,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end 
 
                         `OP_SUB: begin
@@ -569,7 +636,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_SUBU: begin
@@ -578,7 +644,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_SLT: begin
@@ -587,7 +652,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_SLTU: begin
@@ -596,7 +660,6 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
                             write_or_not <= 1;
-                            valid <= 1;
                         end
 
                         `OP_MULT: begin
@@ -605,7 +668,6 @@ module insDecode(
                             reg2_read_enabler <= 1;
                             aluop_output <= `ALUOP_MULT;
                             alusel_output <= `ALUSEL_MUL;
-                            valid <= 1;
                         end
 
                         `OP_MULTU: begin
@@ -614,7 +676,6 @@ module insDecode(
                             reg2_read_enabler <= 1;
                             aluop_output <= `ALUOP_MULT;
                             alusel_output <= `ALUSEL_MUL;
-                            valid <= 1;
                         end
 
                         `OP_JR: begin
@@ -627,7 +688,6 @@ module insDecode(
                             branch_target_output <= regOp1;
                             branch_flag_output <= 1;
                             next_delay <= 1;
-                            valid <= 1;
                         end
 
                         `OP_JALR: begin
@@ -641,7 +701,6 @@ module insDecode(
                             branch_target_output <= regOp1;
                             branch_flag_output <= 1;
                             next_delay <= 1;
-                            valid <= 1;
                         end
 
                         `OP_SLL: begin
@@ -652,16 +711,14 @@ module insDecode(
                                 dest_addr <= insDecode_ins[15:11];
                                 reg1_read_enabler <= 0;
                                 reg2_read_enabler <= 0;
-                                valid <= 1;
                             end else begin
                                 write_or_not <= 1'b1;
                                 aluop_output <= `ALUOP_SLL;
                                 alusel_output <= `ALUSEL_SHIFT;
                                 reg1_read_enabler <= 0;
                                 reg2_read_enabler <= 1;
-                                dest_addr = insDecode_ins[15:11];
+                                dest_addr <= insDecode_ins[15:11];
                                 imm <= op2;
-                                valid <= 1;
                             end
                         end
 
@@ -676,7 +733,6 @@ module insDecode(
                             alusel_output <= `ALUSEL_ARCH;
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
-                            valid <= 1;
                         end
 
                         `OP_CLO: begin
@@ -685,7 +741,6 @@ module insDecode(
                             alusel_output <= `ALUSEL_ARCH;
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
-                            valid <= 1;
                         end
 
                         `OP_MUL: begin
@@ -694,7 +749,6 @@ module insDecode(
                             alusel_output <= `ALUSEL_MUL;
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 1;
-                            valid <= 1;
                         end
                     endcase
                 end
@@ -712,13 +766,13 @@ module insDecode(
 
     always @ (*) begin
         if (rst == 1)
-            regOp1 = 0;
+            regOp1 <= 0;
         else if (reg1_read_enabler == 1 && execute_WriteOrNot == 1 && execute_DestAddr == reg1_addr_output)
             regOp1 <= execute_Wdata;
         else if (reg1_read_enabler == 1 && memory_WriteOrNot == 1 && memory_DestAddr == reg1_addr_output)
             regOp1 <= memory_Wdata;
         else if (reg1_read_enabler == 1)
-            regOp1 = reg1_data_input;
+            regOp1 <= reg1_data_input;
         else 
             regOp1 <= imm;
     end
@@ -731,7 +785,7 @@ module insDecode(
         else if (reg2_read_enabler == 1 && memory_WriteOrNot == 1 && memory_DestAddr == reg2_addr_output)
             regOp2 <= memory_Wdata;
         else if (reg2_read_enabler == 1) 
-            regOp2 = reg2_data_input;
+            regOp2 <= reg2_data_input;
         else 
             regOp2 <= imm;
     end

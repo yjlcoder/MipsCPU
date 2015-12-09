@@ -37,6 +37,9 @@ module execute(
     input wire[31:0] memory2writeback_HILO_HI,
     input wire[31:0] memory2writeback_HILO_LO,
 
+    input wire [31:0] hilo0_HILO_HI,
+    input wire [31:0] hilo0_HILO_LO,
+
     input wire[31:0] ret_addr,
     input wire in_delayslot,
 
@@ -46,7 +49,12 @@ module execute(
 
     output reg execute_HILO_enabler,
     output reg[31:0] execute_HILO_HI,
-    output reg[31:0] execute_HILO_LO
+    output reg[31:0] execute_HILO_LO,
+
+    input wire[31:0] insDecode2execute_ins,
+    output wire[7:0] aluop_output,
+    output wire[31:0] mem_addr_output,
+    output wire[31:0] regOp2_output
     );
 
     reg [31:0] opOut;
@@ -80,6 +88,12 @@ module execute(
     assign mulOp2 = ((( aluop_input == `ALUOP_MUL) || (aluop_input == `ALUOP_MULT)) && (regOp2[31] == 1)) ? (~regOp2) + 1 : regOp2;
 
     assign mul_temp = mulOp1 * mulOp2;
+
+    assign aluop_output = aluop_input;
+
+    assign mem_addr_output = regOp1 + {{16{insDecode2execute_ins[15]}}, insDecode2execute_ins[15:0]};
+
+    assign regOp2_output = regOp2;
 
     always @ (*) begin
         if (rst == 1'b1) begin
@@ -149,9 +163,11 @@ module execute(
     end
 
     always @ (*) begin
-        execute_HILO_enabler <= 0;
         if(rst == 1) begin
             opOut <= 0;
+            execute_HILO_enabler <= 0;
+            execute_HILO_HI <= 0;
+            execute_HILO_LO <= 0;
         end else begin
             case (aluop_input)
                 `ALUOP_AND: begin
@@ -216,8 +232,25 @@ module execute(
                     execute_HILO_enabler <= 1'b1;
                     execute_HILO_LO <= regOp1;
                 end
-                default:
+                `ALUOP_MULT, `ALUOP_MULTU: begin
+                    execute_HILO_enabler <= 1;
+                    execute_HILO_HI <= mul_result[63:32];
+                    execute_HILO_LO <= mul_result[31:0];
+                end
+                `ALUOP_MTHI: begin
+                    execute_HILO_enabler <= 1;
+                    execute_HILO_HI <= regOp1;
+                    execute_HILO_LO <= lo;
+                end
+                `ALUOP_MTLO: begin
+                    execute_HILO_enabler <= 1;
+                    execute_HILO_HI <= hi;
+                    execute_HILO_LO <= regOp1;
+                end
+                default:begin
                     opOut <= 0;
+                    execute_HILO_enabler <= 0;
+                end
             endcase
         end
     end
@@ -239,7 +272,7 @@ module execute(
             `ALUSEL_ARCH:
                 wdata_output <= arch_answer;
             `ALUSEL_MUL:
-                wdata_output <= mul_result;
+                wdata_output <= mul_result[31:0];
             `ALUSEL_JUMP_BRANCH:
                 wdata_output <= ret_addr;
             default:
@@ -251,38 +284,14 @@ module execute(
         if (memory_HILO_enabler == 1) begin
             hi = memory_HILO_HI;
             lo = memory_HILO_LO;
+        end else if (memory2writeback_HILO_enabler == 1) begin
+            hi = memory2writeback_HILO_HI;
+            lo = memory2writeback_HILO_LO;
         end else begin
-            if (memory2writeback_HILO_enabler == 1) begin
-                hi = memory2writeback_HILO_HI;
-                lo = memory2writeback_HILO_LO;
-            end
+            hi = hilo0_HILO_HI;
+            lo = hilo0_HILO_LO;
         end
     end
 
-    always @ (*) begin
-        if(rst == 1) begin
-            execute_HILO_enabler <= 0;
-            execute_HILO_HI <= 0;
-            execute_HILO_LO <= 0;
-        end else 
-            case (aluop_input)
-                `ALUOP_MULT, `ALUOP_MULTU: begin
-                    execute_HILO_enabler <= 1;
-                    execute_HILO_HI <= mul_result[63:32];
-                    execute_HILO_LO <= mul_result[31:0];
-                end
-                `ALUOP_MTHI: begin
-                    execute_HILO_enabler <= 1;
-                    execute_HILO_HI <= regOp1;
-                    execute_HILO_LO <= lo;
-                end
-                `ALUOP_MTLO: begin
-                    execute_HILO_enabler <= 1;
-                    execute_HILO_HI <= hi;
-                    execute_HILO_LO <= regOp1;
-                end
-                default:
-                    execute_HILO_enabler <= 0;
-            endcase
-    end
 endmodule
+

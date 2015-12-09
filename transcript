@@ -3,139 +3,148 @@
 # ** Warning: (vlib-34) Library already exists at "work".
 # 
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:41 on Dec 08,2015
+# Start time: 09:29:22 on Dec 09,2015
 # vlog -reportprogress 300 regfile.v 
 # -- Compiling module regfile
 # 
 # Top level modules:
 # 	regfile
-# End time: 15:31:41 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:41 on Dec 08,2015
+# Start time: 09:29:23 on Dec 09,2015
 # vlog -reportprogress 300 pc_module.v 
 # -- Compiling module pc_module
 # 
 # Top level modules:
 # 	pc_module
-# End time: 15:31:41 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:41 on Dec 08,2015
+# Start time: 09:29:23 on Dec 09,2015
 # vlog -reportprogress 300 memory2writeback.v 
 # -- Compiling module memory2writeback
 # 
 # Top level modules:
 # 	memory2writeback
-# End time: 15:31:41 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:41 on Dec 08,2015
+# Start time: 09:29:23 on Dec 09,2015
 # vlog -reportprogress 300 memory.v 
 # -- Compiling module memory
 # 
 # Top level modules:
 # 	memory
-# End time: 15:31:41 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:41 on Dec 08,2015
+# Start time: 09:29:23 on Dec 09,2015
 # vlog -reportprogress 300 insFetch2insDecode.v 
 # -- Compiling module insFetch2insDecode
 # 
 # Top level modules:
 # 	insFetch2insDecode
-# End time: 15:31:42 on Dec 08,2015, Elapsed time: 0:00:01
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:42 on Dec 08,2015
+# Start time: 09:29:23 on Dec 09,2015
 # vlog -reportprogress 300 insDecode2execute.v 
 # -- Compiling module insDecode2execute
 # 
 # Top level modules:
 # 	insDecode2execute
-# End time: 15:31:42 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:23 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:42 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 insDecode.v 
 # -- Compiling module insDecode
 # 
 # Top level modules:
 # 	insDecode
-# End time: 15:31:42 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:42 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 HILO.v 
 # -- Compiling module hilo
 # 
 # Top level modules:
 # 	hilo
-# End time: 15:31:42 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:42 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 execute2memory.v 
 # -- Compiling module execute2memory
 # 
 # Top level modules:
 # 	execute2memory
-# End time: 15:31:42 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:42 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 execute.v 
 # -- Compiling module execute
 # 
 # Top level modules:
 # 	execute
-# End time: 15:31:43 on Dec 08,2015, Elapsed time: 0:00:01
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:43 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
+# vlog -reportprogress 300 ram.v 
+# -- Compiling module ram
+# 
+# Top level modules:
+# 	ram
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 0
+# Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 mips.v 
 # -- Compiling module mips
 # 
 # Top level modules:
 # 	mips
-# End time: 15:31:43 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:24 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:43 on Dec 08,2015
+# Start time: 09:29:24 on Dec 09,2015
 # vlog -reportprogress 300 insRom.v 
 # -- Compiling module instRom
 # 
 # Top level modules:
 # 	instRom
-# End time: 15:31:43 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:25 on Dec 09,2015, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:43 on Dec 08,2015
+# Start time: 09:29:25 on Dec 09,2015
 # vlog -reportprogress 300 cpu.v 
 # -- Compiling module cpu
 # 
 # Top level modules:
 # 	cpu
-# End time: 15:31:43 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:25 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:43 on Dec 08,2015
+# Start time: 09:29:25 on Dec 09,2015
 # vlog -reportprogress 300 cpu_tb.v 
 # -- Compiling module cpu_tb
 # 
 # Top level modules:
 # 	cpu_tb
-# End time: 15:31:43 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:25 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # Model Technology ModelSim PE Student Edition vlog 10.4a Compiler 2015.03 Apr  7 2015
-# Start time: 15:31:44 on Dec 08,2015
+# Start time: 09:29:25 on Dec 09,2015
 # vlog -reportprogress 300 d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v 
 # -- Compiling module glbl
 # 
 # Top level modules:
 # 	glbl
-# End time: 15:31:44 on Dec 08,2015, Elapsed time: 0:00:00
+# End time: 09:29:25 on Dec 09,2015, Elapsed time: 0:00:00
 # Errors: 0, Warnings: 0
 # //  ModelSim PE Student Edition 10.4a Apr  7 2015 
 # //
@@ -156,7 +165,7 @@
 # // FOR HIGHER EDUCATION PURPOSES ONLY
 # //
 # vsim -gui -do "do {cpu_tb.fdo}" 
-# Start time: 15:31:44 on Dec 08,2015
+# Start time: 09:29:25 on Dec 09,2015
 # Loading work.cpu_tb
 # Loading work.cpu
 # Loading work.mips
@@ -171,18 +180,10 @@
 # Loading work.regfile
 # Loading work.hilo
 # Loading work.instRom
+# Loading work.ram
 # Loading work.glbl
 # .main_pane.wave.interior.cs.body.pw.wf
 # .main_pane.structure.interior.cs.body.struct
 # .main_pane.objects.interior.cs.body.tree
-add wave -position end  sim:/cpu_tb/uut/mips0/regfile0/regs[1]
-add wave -position end  sim:/cpu_tb/uut/mips0/regfile0/regs[2]
-add wave -position end  sim:/cpu_tb/uut/mips0/regfile0/regs[3]
-add wave -position end  sim:/cpu_tb/uut/mips0/regfile0/regs[4]
-add wave -position end  sim:/cpu_tb/uut/mips0/regfile0/regs[5]
-restart -f
-run -all
-# ** Note: $finish    : cpu_tb.v(48)
-#    Time: 10195 ns  Iteration: 0  Instance: /cpu_tb
-# 1
-# Break in Module cpu_tb at cpu_tb.v line 48
+# End time: 09:31:06 on Dec 09,2015, Elapsed time: 0:01:41
+# Errors: 0, Warnings: 0

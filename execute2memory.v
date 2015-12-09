@@ -35,7 +35,14 @@ module execute2memory(
 
     output reg execute2memory_HILO_enabler,
     output reg[31:0] execute2memory_HILO_HI,
-    output reg[31:0] execute2memory_HILO_LO
+    output reg[31:0] execute2memory_HILO_LO,
+
+    input wire[7:0] aluop,
+    input wire[31:0] mem_addr,
+    input wire[31:0] regOp2,
+    output reg[7:0] aluop_output,
+    output reg[31:0] mem_addr_output,
+    output reg[31:0] regOp2_output 
     );
 
     always @ (posedge clk) begin
@@ -53,6 +60,9 @@ module execute2memory(
             execute2memory_HILO_enabler <= execute_HILO_enabler;
             execute2memory_HILO_HI <= execute_HILO_HI;
             execute2memory_HILO_LO <= execute_HILO_LO;
+            aluop_output <= aluop;
+            mem_addr_output <= mem_addr;
+            regOp2_output <= regOp2;
         end
     end
 endmodule

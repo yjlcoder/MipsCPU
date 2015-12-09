@@ -48,6 +48,8 @@
 `define OP_SW 6'b101011
 `define OP_LWL 6'b100010
 `define OP_LWR 6'b100110
+`define OP_SWL 6'b101010
+`define OP_SWR 6'b101110
 
 `define OP_REGIMM 6'b000001
 
@@ -154,6 +156,23 @@
 `define ALUOP_BLTZAL  8'b01001010
 `define ALUOP_BNE  8'b01010010
 
+`define ALUOP_LB  8'b11100000
+`define ALUOP_LBU  8'b11100100
+`define ALUOP_LH  8'b11100001
+`define ALUOP_LHU  8'b11100101
+`define ALUOP_LL  8'b11110000
+`define ALUOP_LW  8'b11100011
+`define ALUOP_LWL  8'b11100010
+`define ALUOP_LWR  8'b11100110
+`define ALUOP_PREF  8'b11110011
+`define ALUOP_SB  8'b11101000
+`define ALUOP_SC  8'b11111000
+`define ALUOP_SH  8'b11101001
+`define ALUOP_SW  8'b11101011
+`define ALUOP_SWL  8'b11101010
+`define ALUOP_SWR  8'b11101110
+`define ALUOP_SYNC  8'b00001111
+
 `define ALUOP_NOP 8'b0000_0000
 
 /* alusel */
@@ -163,4 +182,5 @@
 `define ALUSEL_ARCH 3'b100
 `define ALUSEL_MUL 3'b101
 `define ALUSEL_JUMP_BRANCH 3'b110
+`define ALUSEL_SL 3'b111
 `define ALUSEL_NOP 3'b000

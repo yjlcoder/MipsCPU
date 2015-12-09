@@ -38,10 +38,16 @@ module regfile(
     /* Define 32 x 32 regs */
     reg[31:0] regs[0:31];
 
+    /* Reset */
+    integer i;
+
     /* Wirte to waddr */
     always @ (posedge clk) begin
         if(rst == 0 && we == 1 && waddr != 0)
             regs[waddr] <= wdata;
+        else if (rst == 1) 
+            for(i = 0; i < 32; i = i + 1)
+                regs[i] <= wdata;
     end
 
     /* Read from raddr1 */

@@ -42,7 +42,10 @@ module insDecode2execute(
 
     output reg execute_in_delayslot,
     output reg[31:0] ret_addr_output,
-    output reg insDecode_in_delayslot
+    output reg insDecode_in_delayslot,
+
+    input wire[31:0] insDecode_ins,
+    output reg[31:0] insDecode2execute_ins
     );
 
     always @ (posedge clk) begin
@@ -63,6 +66,7 @@ module insDecode2execute(
             ret_addr_output <= ret_addr;
             execute_in_delayslot <= in_delayslot;
             insDecode_in_delayslot <= next_delay;
+            insDecode2execute_ins <= insDecode_ins;
         end
     end
 
