@@ -20,7 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module cpu(
     input rst,
-    input clk
+    input clk,
+    output ram_enabler
     );
 
     wire[31:0] instAddr;
@@ -32,19 +33,20 @@ module cpu(
     wire[31:0] ram_data_output;
     wire[3:0] ram_select_output;
     wire ram_write_enabler;
-    wire ram_enabler;
+    //wire ram_enabler;
 
-    /* mips mips0(
-        .rst(rst), .clk(clk),
+    mips mips0(
+        .rst(rst), 
+        .clk(clk),
         .ins_input(inst),
         .addr_output(instAddr),
         .enabler_output(enabler),
 
         .ram_data(ram_data_input),
         .ram_addr_output(ram_addr_output),
-        .ram_data_output(ram_data_output),
         .ram_write_enabler_output(ram_write_enabler),
         .ram_select_output(ram_select_output),
+        .ram_data_output(ram_data_output),
         .ram_enabler(ram_enabler)
     );
 
@@ -63,6 +65,5 @@ module cpu(
         .data_input(ram_data_output),
         .data_output(ram_data_input)
     );
-    */
 endmodule
 
