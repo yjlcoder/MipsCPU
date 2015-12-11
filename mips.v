@@ -132,6 +132,10 @@ module mips(
     wire [31:0] execute2memory_mem_addr;
     wire [31:0] execute2memory_regOp2;
 
+    wire [5:0] control_output;
+    wire insDecode_pause;
+    wire execute_pause;
+
     assign addr_output = pc;
 
     pc_module pc_module0(
@@ -140,13 +144,15 @@ module mips(
         .branch_flag(insDecode2pc_branchFlag),
         .branch_target(insDecode2pc_branchTargetAddr),
         .pc(pc),
-        .ce(enabler_output)
+        .ce(enabler_output),
+        .control(control_output)
     );
 
     insFetch2insDecode insFecth2insDecode0(
         .clk(clk),.rst(rst),
         .insFetchPC(pc),.insFetchInst(ins_input),
-        .insDecodePC(insDecode_PC), .insDecodeInst(insDecode_Inst)
+        .insDecodePC(insDecode_PC), .insDecodeInst(insDecode_Inst),
+        .control(control_output)
     );
 
     insDecode insDecode0(
@@ -165,7 +171,8 @@ module mips(
         .branch_target_output(insDecode2pc_branchTargetAddr),
         .ret_addr(insDecode_retAddr), .next_delay(insDecode_nextDelay),
         .in_delayslot_output(insDecode_inDelayslot),
-        .insDecode_ins_output(insDecode_ins)
+        .insDecode_ins_output(insDecode_ins),
+        .insDecode_pause_output(insDecode_pause)
     );
 
     insDecode2execute insDecode2execute0(
@@ -181,7 +188,8 @@ module mips(
         .ret_addr_output(insDecode2execute_retAddr),
         .insDecode_in_delayslot(insDecode2execute_insDecodeInDelayslot),
         .insDecode_ins(insDecode_ins),
-        .insDecode2execute_ins(insDecode2execute_ins)
+        .insDecode2execute_ins(insDecode2execute_ins),
+        .control(control_output)
     );
 
     execute execute0(
@@ -219,7 +227,9 @@ module mips(
         .insDecode2execute_ins(insDecode2execute_ins),
         .aluop_output(execute_aluop),
         .mem_addr_output(execute_mem_addr),
-        .regOp2_output(execute_regOp2)
+        .regOp2_output(execute_regOp2),
+
+        .execute_pause_output(execute_pause)
     );
 
     execute2memory execute2memory0(
@@ -239,7 +249,8 @@ module mips(
         .regOp2(execute_regOp2),
         .aluop_output(execute2memory_aluop),
         .mem_addr_output(execute2memory_mem_addr),
-        .regOp2_output(execute2memory_regOp2)
+        .regOp2_output(execute2memory_regOp2),
+        .control(control_output)
     );
 
     memory memory0(
@@ -282,7 +293,8 @@ module mips(
         .wdata_output(memory2writeback_Wdata),
         .memory2writeback_HILO_enabler(memory2writeback_HILO_enabler),
         .memory2writeback_HILO_HI(memory2writeback_HILO_HI),
-        .memory2writeback_HILO_LO(memory2writeback_HILO_LO)
+        .memory2writeback_HILO_LO(memory2writeback_HILO_LO),
+        .control(control_output)
     );
 
     regfile regfile0(
@@ -298,6 +310,13 @@ module mips(
         .enabler(memory2writeback_HILO_enabler),
         .memory2writeback_HI(memory2writeback_HILO_HI), .memory2writeback_LO(memory2writeback_HILO_LO),
         .hilo_hi(hilo_HI), .hilo_lo(hilo_LO)
+    );
+
+    control control0(
+        .rst(rst),
+        .insDecode_pause(insDecode_pause),
+        .execute_pause(execute_pause),
+        .control_output(control_output)
     );
 
 endmodule

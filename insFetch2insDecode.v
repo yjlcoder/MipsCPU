@@ -25,7 +25,10 @@ module insFetch2insDecode(
     input wire[31:0] insFetchPC,
     input wire[31:0] insFetchInst,
     output reg[31:0] insDecodePC,
-    output reg[31:0] insDecodeInst
+    output reg[31:0] insDecodeInst,
+
+    input wire[5:0] control
+
     );
 
     always @ (posedge clk) begin
@@ -33,8 +36,7 @@ module insFetch2insDecode(
             insDecodePC <= 0;
             insDecodeInst <= 0;
         end
-        else 
-        begin
+        else if(control[1] == 0) begin
             insDecodePC <= insFetchPC;
             insDecodeInst <= insFetchInst;
         end

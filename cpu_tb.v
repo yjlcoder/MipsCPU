@@ -27,11 +27,13 @@ module cpu_tb;
 	// Inputs
 	reg rst;
 	reg clk;
+    wire ram_enabler;
 
 	// Instantiate the Unit Under Test (UUT)
 	cpu uut (
 		.rst(rst), 
-		.clk(clk)
+		.clk(clk),
+        .ram_enabler(ram_enabler)
 	);
 
 	initial begin

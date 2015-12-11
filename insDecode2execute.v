@@ -45,7 +45,9 @@ module insDecode2execute(
     output reg insDecode_in_delayslot,
 
     input wire[31:0] insDecode_ins,
-    output reg[31:0] insDecode2execute_ins
+    output reg[31:0] insDecode2execute_ins,
+
+    input wire[5:0] control
     );
 
     always @ (posedge clk) begin
@@ -56,7 +58,7 @@ module insDecode2execute(
             regOp2_output <= 0;
             dest_addr_output <= 0;
             write_or_not_output <= 0;
-        end else begin
+        end else if(control[2] == 0) begin
             aluop_output <= aluop_input;
             alusel_output <= alusel_input;
             regOp1_output <= regOp1;

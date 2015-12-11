@@ -8,343 +8,407 @@ z2
 !i10f 100
 cModel Technology
 Z0 dE:/HDL/MipsCPU
-vcpu
-Z1 !s110 1449629881
+vclk_ip
+!s110 1449824146
 !i10b 1
-!s100 Q>RM[7h?8GOe:K919zhL?3
-I`4AN^cCfdzHkKSfPkjG^]2
-Z2 VDg1SIo80bB@j0V0VzS_@n1
+!s100 ;L<^GXW@oE]WzbE==;j@J3
+INcI4?E;_JzCcaiN3^]9Qm0
+Z1 VDg1SIo80bB@j0V0VzS_@n1
 R0
-w1449629161
-8cpu.v
-Fcpu.v
-Z3 L0 21
-Z4 OP;L;10.4a;61
+w1449822572
+8ipcore_dir/clk_ip.v
+Fipcore_dir/clk_ip.v
+L0 68
+Z2 OP;L;10.4a;61
 r1
 !s85 0
 31
-Z5 !s108 1449629881.000000
+Z3 !s108 1449824146.000000
+!s107 ipcore_dir/clk_ip.v|
+!s90 -reportprogress|300|ipcore_dir/clk_ip.v|
+!s101 -O0
+!i113 1
+Z4 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
+vcontrol
+Z5 !s110 1449824149
+!i10b 1
+!s100 m?XNfhMGQOd6<GFF=7L6k3
+I4`_HHHkdMaUJXhbQo`XW22
+R1
+R0
+w1449801942
+8control.v
+Fcontrol.v
+Z6 L0 21
+R2
+r1
+!s85 0
+31
+Z7 !s108 1449824149.000000
+!s107 control.v|
+!s90 -reportprogress|300|control.v|
+!s101 -O0
+!i113 1
+R4
+vcpu
+Z8 !s110 1449824150
+!i10b 1
+!s100 Y>HKbOd?gGDTXfV?e11OL1
+I3?HUd3Rd4TaUiU>9>jGBo2
+R1
+R0
+w1449824121
+8cpu.v
+Fcpu.v
+R6
+R2
+r1
+!s85 0
+31
+R7
 !s107 cpu.v|
 !s90 -reportprogress|300|cpu.v|
 !s101 -O0
 !i113 1
-Z6 o-L mtiAvm -L mtiRnm -L mtiOvm -L mtiUvm -L mtiUPF -L infact -O0
+R4
 vcpu_tb
-Z7 !s110 1449629882
+R8
 !i10b 1
-!s100 5S?NPGj`hHaC0ni@55@hN1
-I<746aGeJWY`HMjIL>N?eF3
-R2
+!s100 iG=JzG^5SeKh:oJgNMQZ<1
+Ib=K^@1Be0Mj[0Y?NB7==W0
+R1
 R0
-w1449623265
+w1449811118
 8cpu_tb.v
 Fcpu_tb.v
 L0 25
-R4
+R2
 r1
 !s85 0
 31
-Z8 !s108 1449629882.000000
+Z9 !s108 1449824150.000000
 !s107 cpu_tb.v|
 !s90 -reportprogress|300|cpu_tb.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vexecute
-R1
+Z10 !s110 1449824148
 !i10b 1
-!s100 `M9HVFc`?P0YNBHzHUoA]3
-I@[bSMdOckoZBOO;I:<nC?2
-R2
+!s100 zCEK7_]T=;Y`1=g96>LX61
+Ihh_ChU1XmfR]z5D<eSlB^0
+R1
 R0
-w1449628120
+w1449810685
 8execute.v
 Fexecute.v
-Z9 L0 22
-R4
+Z11 L0 22
+R2
 r1
 !s85 0
 31
-Z10 !s108 1449629880.000000
+Z12 !s108 1449824148.000000
 !s107 defineOperator.v|execute.v|
 !s90 -reportprogress|300|execute.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vexecute2memory
-Z11 !s110 1449629880
+R10
 !i10b 1
-!s100 jOn`:MU_i9_H;Yc6m^]d@0
-IIY`mJ95J=F@=cM<dKbZN`1
-R2
+!s100 THeeJ_FSzVf1iV4cTgJAX2
+I752KdJTaS?`_0]gaLfH>h0
+R1
 R0
-w1449561701
+w1449803613
 8execute2memory.v
 Fexecute2memory.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R10
+R12
 !s107 execute2memory.v|
 !s90 -reportprogress|300|execute2memory.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vglbl
-R7
+R8
 !i10b 1
 !s100 UlJ]9LUWO:ZWoRO62F9fW3
 I80=^NZZTG?D=TbEURdIK;1
-R2
+R1
 R0
 w1381681120
 8d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v
 Fd:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v
 L0 5
-R4
+R2
 r1
 !s85 0
 31
-R8
+R9
 !s107 d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s90 -reportprogress|300|d:/Xilinx/14.7/ISE_DS/ISE/verilog/src/glbl.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vhilo
-R11
+R10
 !i10b 1
 !s100 UW;n^UOY8ejE4z@_X_F<03
 IzgUQOPK<@zFH;Xn^KS5o:0
-R2
+R1
 R0
 w1449455657
 8HILO.v
 FHILO.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R10
+R12
 !s107 HILO.v|
 !s90 -reportprogress|300|HILO.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vinsDecode
-R11
+R10
 !i10b 1
-!s100 F8^zYl3F73@dGYVHN@j?e1
-Ia`EobiXBW;13Iz^j6UB131
-R2
+!s100 Jz@_CbhkFJ4K;7fgX45kf3
+IRRJU]E<6>WjO4O1B@<7_32
+R1
 R0
-w1449627524
+w1449810400
 8insDecode.v
 FinsDecode.v
 L0 24
-R4
+R2
 r1
 !s85 0
 31
-R10
+R12
 !s107 defineOperator.v|insDecode.v|
 !s90 -reportprogress|300|insDecode.v|
 !s101 -O0
 !i113 1
-R6
+R4
 nins@decode
 vinsDecode2execute
-R11
+Z13 !s110 1449824147
 !i10b 1
-!s100 AP@MFJRKWgZ`fMf4bVBhX3
-IBUDTiNSg@oki^D^72bQHj3
-R2
+!s100 C]=eWOe[VDC5OP]Pgng082
+IbY[ml?d6WL<VAZchlL5bo2
+R1
 R0
-w1449561520
+w1449803625
 8insDecode2execute.v
 FinsDecode2execute.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R10
+Z14 !s108 1449824147.000000
 !s107 insDecode2execute.v|
 !s90 -reportprogress|300|insDecode2execute.v|
 !s101 -O0
 !i113 1
-R6
+R4
 nins@decode2execute
 vinsFetch2insDecode
-Z12 !s110 1449629879
+R13
 !i10b 1
-!s100 ;ZjdU]zA1M9iY`f]nlAI^0
-I2LI8W8KRTXF]?l6j=`ZYV1
-R2
+!s100 g;DP:AEo_;>oXlY=Ib>II2
+IV9>Z_[jzN3fCOE@_lSWE^1
+R1
 R0
-w1449230720
+w1449803495
 8insFetch2insDecode.v
 FinsFetch2insDecode.v
-R9
-R4
+R11
+R2
 r1
 !s85 0
 31
-Z13 !s108 1449629879.000000
+R14
 !s107 insFetch2insDecode.v|
 !s90 -reportprogress|300|insFetch2insDecode.v|
 !s101 -O0
 !i113 1
-R6
+R4
 nins@fetch2ins@decode
-vinstRom
+vinstMem_ip
+R5
+!i10b 1
+!s100 6AnRH@Il2G^5jIo0a^[k60
+ISd42f;H[LXPgV56RZd:=h3
 R1
+R0
+w1449811785
+8ipcore_dir/instMem_ip.v
+Fipcore_dir/instMem_ip.v
+L0 39
+R2
+r1
+!s85 0
+31
+R7
+!s107 ipcore_dir/instMem_ip.v|
+!s90 -reportprogress|300|ipcore_dir/instMem_ip.v|
+!s101 -O0
+!i113 1
+R4
+ninst@mem_ip
+vinstRom
+!s110 1449629881
 !i10b 1
 !s100 RE4oK`lPb>z_=b<LOBPBc2
 IS=`L^aggUHbjPLR12_QM^3
-R2
+R1
 R0
 w1449593162
 8insRom.v
 FinsRom.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R5
+!s108 1449629881.000000
 !s107 insRom.v|
 !s90 -reportprogress|300|insRom.v|
 !s101 -O0
 !i113 1
-R6
+R4
 ninst@rom
 vmemory
-R12
+R13
 !i10b 1
 !s100 h^i2;MfG7VB`kVa_5^ioo1
 IUKLaZK=S<gDjz]0faJFg81
-R2
+R1
 R0
 w1449594081
 8memory.v
 Fmemory.v
-R9
-R4
+R11
+R2
 r1
 !s85 0
 31
-R13
+R14
 !s107 defineOperator.v|memory.v|
 !s90 -reportprogress|300|memory.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vmemory2writeback
-R12
+R13
 !i10b 1
-!s100 5a:dI`@ZJihnV6fAa6dFf1
-Ih^MVM=cC_8ST@J8eJZHkK3
-R2
+!s100 =DoZieZROnUeO8:L?:3a82
+I8m0KgEN_5WQmTz<ic08Uj0
+R1
 R0
-w1449455046
+w1449803934
 8memory2writeback.v
 Fmemory2writeback.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R13
+R14
 !s107 memory2writeback.v|
 !s90 -reportprogress|300|memory2writeback.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vmips
-R1
+R5
 !i10b 1
-!s100 R9TF3TI^jkF2Y6@3nWO6T2
-IgcPe4m`Vd?i0U0_Z:b6OA1
-R2
+!s100 HP58C^Y[o_0LPHeag`NgF0
+I?Y@LdQ41hTdoOD<CVjJAJ0
+R1
 R0
-w1449628068
+w1449811239
 8mips.v
 Fmips.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R5
+R7
 !s107 mips.v|
 !s90 -reportprogress|300|mips.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vpc_module
-R12
+R13
 !i10b 1
-!s100 >;kD_Xm2:AgMdebVbP>kO2
-I3RF3FbbPOa<idN43zjiDn1
-R2
+!s100 M8YZ`D5Xc57UX_?naQYl@1
+IMOn`9:4fLeW:jBOPfbz[A0
+R1
 R0
-w1449624737
+w1449803360
 8pc_module.v
 Fpc_module.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R13
+R14
 !s107 pc_module.v|
 !s90 -reportprogress|300|pc_module.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vram
-R1
+R5
 !i10b 1
-!s100 1T5R:DXO4`bM7lkl?YelL2
-II5>ah56C=X5H_l8FeAdJc1
-R2
+!s100 Zz02iEHNOlK]`BViT;VVW1
+I3Gk?3@>YVkN^YQ;1<TmMd0
+R1
 R0
-w1449593714
+w1449747987
 8ram.v
 Fram.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R5
+R7
 !s107 ram.v|
 !s90 -reportprogress|300|ram.v|
 !s101 -O0
 !i113 1
-R6
+R4
 vregfile
-R12
+R13
 !i10b 1
 !s100 Q9ho00XS8iFJE3VbmTgA03
 ISQhi4T4<H:eM76:=;cV@[1
-R2
+R1
 R0
 w1449625985
 8regfile.v
 Fregfile.v
-R3
-R4
+R6
+R2
 r1
 !s85 0
 31
-R13
+R3
 !s107 regfile.v|
 !s90 -reportprogress|300|regfile.v|
 !s101 -O0
 !i113 1
-R6
+R4

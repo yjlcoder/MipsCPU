@@ -42,7 +42,9 @@ module execute2memory(
     input wire[31:0] regOp2,
     output reg[7:0] aluop_output,
     output reg[31:0] mem_addr_output,
-    output reg[31:0] regOp2_output 
+    output reg[31:0] regOp2_output,
+
+    input wire[5:0] control
     );
 
     always @ (posedge clk) begin
@@ -53,7 +55,7 @@ module execute2memory(
             execute2memory_HILO_enabler <= 0;
             execute2memory_HILO_HI <= 0;
             execute2memory_HILO_LO <= 0;
-        end else begin
+        end else if(control[3] == 0) begin
             dest_addr_output <= dest_addr;
             write_or_not_output <= write_or_not;
             wdata_output <= wdata;

@@ -68,7 +68,10 @@ module insDecode(
     output reg [31:0] ret_addr,
 
     /* ram */
-    output wire[31:0] insDecode_ins_output
+    output wire[31:0] insDecode_ins_output,
+
+    /* pause */
+    output insDecode_pause_output
     );
 
     reg [31:0] imm;
@@ -86,6 +89,7 @@ module insDecode(
     assign pc_4 = insDecode_pc + 4;
     assign imm_sll2_signedext = {{14{insDecode_ins[15]}}, insDecode_ins[15:0], 2'b00};
     assign insDecode_ins_output = insDecode_ins;
+    assign insDecode_pause_output = 0;
 
     /* Decode */
     always @ (*) begin

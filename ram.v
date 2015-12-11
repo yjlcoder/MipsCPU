@@ -28,10 +28,10 @@ module ram(
     output reg[31:0] data_output
     );
 
-    reg[7:0] byte_mem0[0:65565];
-    reg[7:0] byte_mem1[0:65535];
-    reg[7:0] byte_mem2[0:65535];
-    reg[7:0] byte_mem3[0:65535];
+    reg[7:0] byte_mem0[0:32767];
+    reg[7:0] byte_mem1[0:32767];
+    reg[7:0] byte_mem2[0:32767];
+    reg[7:0] byte_mem3[0:32767];
 
     always @ (posedge clk) begin
         if (enabler == 1 && write_enabler == 1) begin

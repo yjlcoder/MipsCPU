@@ -21,6 +21,7 @@
 module pc_module(
 	input clk, //clock
 	input rst,
+    input wire[5:0] control,
 
     /* Branch */
     input branch_flag,
@@ -42,7 +43,7 @@ module pc_module(
             pc <= 0;
         else if (branch_flag == 1)
             pc <= branch_target;
-        else
+        else if (control[0] == 0)
             pc <= pc + 4;
     end
 endmodule

@@ -37,18 +37,20 @@ module memory2writeback(
     /* memory2writeback -> HILO */
     output reg memory2writeback_HILO_enabler,
     output reg[31:0] memory2writeback_HILO_HI,
-    output reg[31:0] memory2writeback_HILO_LO
+    output reg[31:0] memory2writeback_HILO_LO,
+
+    input wire[5:0] control
     );
 
     always @ (posedge clk) begin
-        if (rst == 1) begin
+        if (rst == 1 || (control[4] == 1 && control[5] == 0)) begin
             dest_addr_output <= 0;
             write_or_not_output <= 0;
             wdata_output <= 0;
             memory2writeback_HILO_enabler <= 0; 
             memory2writeback_HILO_HI <= 0; 
             memory2writeback_HILO_LO <= 0;
-        end else begin
+        end else if(control[4] == 0)begin
             dest_addr_output <= dest_addr;
             write_or_not_output <= write_or_not;
             wdata_output <= wdata;

@@ -54,7 +54,9 @@ module execute(
     input wire[31:0] insDecode2execute_ins,
     output wire[7:0] aluop_output,
     output wire[31:0] mem_addr_output,
-    output wire[31:0] regOp2_output
+    output wire[31:0] regOp2_output,
+
+    output execute_pause_output
     );
 
     reg [31:0] opOut;
@@ -94,6 +96,8 @@ module execute(
     assign mem_addr_output = regOp1 + {{16{insDecode2execute_ins[15]}}, insDecode2execute_ins[15:0]};
 
     assign regOp2_output = regOp2;
+
+    assign execute_pause_output = 0;
 
     always @ (*) begin
         if (rst == 1'b1) begin
