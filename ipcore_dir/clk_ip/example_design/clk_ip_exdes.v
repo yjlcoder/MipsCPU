@@ -66,7 +66,9 @@ module clk_ip_exdes
   input         COUNTER_RESET,
   output [1:1]  CLK_OUT,
   // High bits of counters driven by clocks
-  output        COUNT
+  output        COUNT,
+  // Status and control signals
+  input         RESET
  );
 
   // Parameters for the counters
@@ -74,7 +76,7 @@ module clk_ip_exdes
   // Counter width
   localparam    C_W       = 16;
   // Create reset for the counters
-  wire          reset_int = COUNTER_RESET;
+  wire          reset_int = RESET || COUNTER_RESET;
 
    reg rst_sync;
    reg rst_sync_int;
@@ -85,6 +87,7 @@ module clk_ip_exdes
 
   // Declare the clocks and counter
   wire           clk_int;
+  wire           clk_n;
   wire           clk;
   reg  [C_W-1:0] counter;
 
@@ -94,15 +97,19 @@ module clk_ip_exdes
    (// Clock in ports
     .CLK_IN1            (CLK_IN1),
     // Clock out ports
-    .CLK_OUT1           (clk_int));
+    .CLK_OUT1           (clk_int),
+    // Status and control signals
+    .RESET              (RESET));
 
+  assign clk_n = ~clk;
 
-  ODDR clk_out_oddr
+  ODDR2 clkout_oddr
    (.Q  (CLK_OUT[1]),
-    .C  (clk),
+    .C0 (clk),
+    .C1 (clk_n),
     .CE (1'b1),
-    .D1 (1'b1),
-    .D2 (1'b0),
+    .D0 (1'b1),
+    .D1 (1'b0),
     .R  (1'b0),
     .S  (1'b0));
 

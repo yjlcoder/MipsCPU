@@ -44,7 +44,7 @@
 # THIS COPYRIGHT NOTICE AND DISCLAIMER MUST BE RETAINED AS
 # PART OF THIS FILE AT ALL TIMES.
 
-set device xa7a100tcsg324-2i
+set device xc6slx16csg324-3
 set projName instMem_ip
 set design instMem_ip
 set projDir [file dirname [info script]]

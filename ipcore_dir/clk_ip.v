@@ -55,7 +55,7 @@
 // "Output    Output      Phase     Duty      Pk-to-Pk        Phase"
 // "Clock    Freq (MHz) (degrees) Cycle (%) Jitter (ps)  Error (ps)"
 //----------------------------------------------------------------------------
-// CLK_OUT1____50.000______0.000______50.0______268.036____732.678
+// CLK_OUT1____50.000______0.000______50.0______300.000____150.000
 //
 //----------------------------------------------------------------------------
 // "Input Clock   Freq (MHz)    Input Jitter (UI)"
@@ -64,12 +64,14 @@
 
 `timescale 1ps/1ps
 
-(* CORE_GENERATION_INFO = "clk_ip,clk_wiz_v3_6,{component_name=clk_ip,use_phase_alignment=false,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,feedback_source=FDBK_AUTO,primtype_sel=MMCM_ADV,num_out_clk=1,clkin1_period=10.000,clkin2_period=10.000,use_power_down=false,use_reset=false,use_locked=false,use_inclk_stopped=false,use_status=false,use_freeze=false,use_clk_valid=false,feedback_type=SINGLE,clock_mgr_type=MANUAL,manual_override=false}" *)
+(* CORE_GENERATION_INFO = "clk_ip,clk_wiz_v3_6,{component_name=clk_ip,use_phase_alignment=true,use_min_o_jitter=false,use_max_i_jitter=false,use_dyn_phase_shift=false,use_inclk_switchover=false,use_dyn_reconfig=false,feedback_source=FDBK_AUTO,primtype_sel=DCM_SP,num_out_clk=1,clkin1_period=10.0,clkin2_period=10.0,use_power_down=false,use_reset=true,use_locked=false,use_inclk_stopped=false,use_status=false,use_freeze=false,use_clk_valid=false,feedback_type=SINGLE,clock_mgr_type=AUTO,manual_override=false}" *)
 module clk_ip
  (// Clock in ports
   input         CLK_IN1,
   // Clock out ports
-  output        CLK_OUT1
+  output        CLK_OUT1,
+  // Status and control signals
+  input         RESET
  );
 
   // Input buffering
@@ -81,93 +83,65 @@ module clk_ip
 
   // Clocking primitive
   //------------------------------------
-  // Instantiation of the MMCM primitive
+
+  // Instantiation of the DCM primitive
   //    * Unused inputs are tied off
   //    * Unused outputs are labeled unused
-  wire [15:0] do_unused;
-  wire        drdy_unused;
   wire        psdone_unused;
-  wire        locked_unused;
-  wire        clkfbout;
-  wire        clkfboutb_unused;
-  wire        clkout0b_unused;
-  wire        clkout1_unused;
-  wire        clkout1b_unused;
-  wire        clkout2_unused;
-  wire        clkout2b_unused;
-  wire        clkout3_unused;
-  wire        clkout3b_unused;
-  wire        clkout4_unused;
-  wire        clkout5_unused;
-  wire        clkout6_unused;
-  wire        clkfbstopped_unused;
-  wire        clkinstopped_unused;
+  wire        locked_int;
+  wire [7:0]  status_int;
+  wire clkfb;
+  wire clk0;
+  wire clkdv;
 
-  MMCME2_ADV
-  #(.BANDWIDTH            ("LOW"),
-    .CLKOUT4_CASCADE      ("FALSE"),
-    .COMPENSATION         ("ZHOLD"),
-    .STARTUP_WAIT         ("FALSE"),
-    .DIVCLK_DIVIDE        (3),
-    .CLKFBOUT_MULT_F      (21.000),
-    .CLKFBOUT_PHASE       (0.000),
-    .CLKFBOUT_USE_FINE_PS ("FALSE"),
-    .CLKOUT0_DIVIDE_F     (14.000),
-    .CLKOUT0_PHASE        (0.000),
-    .CLKOUT0_DUTY_CYCLE   (0.500),
-    .CLKOUT0_USE_FINE_PS  ("FALSE"),
-    .SS_EN                ("true"),
-    .SS_MODE              ("CENTER_HIGH"),
-    .SS_MOD_PERIOD        (4000),
-    .CLKIN1_PERIOD        (10.000),
-    .REF_JITTER1          (0.010))
-  mmcm_adv_inst
+  DCM_SP
+  #(.CLKDV_DIVIDE          (2.000),
+    .CLKFX_DIVIDE          (1),
+    .CLKFX_MULTIPLY        (4),
+    .CLKIN_DIVIDE_BY_2     ("FALSE"),
+    .CLKIN_PERIOD          (10.0),
+    .CLKOUT_PHASE_SHIFT    ("NONE"),
+    .CLK_FEEDBACK          ("1X"),
+    .DESKEW_ADJUST         ("SYSTEM_SYNCHRONOUS"),
+    .PHASE_SHIFT           (0),
+    .STARTUP_WAIT          ("FALSE"))
+  dcm_sp_inst
+    // Input clock
+   (.CLKIN                 (clkin1),
+    .CLKFB                 (clkfb),
     // Output clocks
-   (.CLKFBOUT            (clkfbout),
-    .CLKFBOUTB           (clkfboutb_unused),
-    .CLKOUT0             (clkout0),
-    .CLKOUT0B            (clkout0b_unused),
-    .CLKOUT1             (clkout1_unused),
-    .CLKOUT1B            (clkout1b_unused),
-    .CLKOUT2             (clkout2_unused),
-    .CLKOUT2B            (clkout2b_unused),
-    .CLKOUT3             (clkout3_unused),
-    .CLKOUT3B            (clkout3b_unused),
-    .CLKOUT4             (clkout4_unused),
-    .CLKOUT5             (clkout5_unused),
-    .CLKOUT6             (clkout6_unused),
-     // Input clock control
-    .CLKFBIN             (clkfbout),
-    .CLKIN1              (clkin1),
-    .CLKIN2              (1'b0),
-     // Tied to always select the primary input clock
-    .CLKINSEL            (1'b1),
-    // Ports for dynamic reconfiguration
-    .DADDR               (7'h0),
-    .DCLK                (1'b0),
-    .DEN                 (1'b0),
-    .DI                  (16'h0),
-    .DO                  (do_unused),
-    .DRDY                (drdy_unused),
-    .DWE                 (1'b0),
+    .CLK0                  (clk0),
+    .CLK90                 (),
+    .CLK180                (),
+    .CLK270                (),
+    .CLK2X                 (),
+    .CLK2X180              (),
+    .CLKFX                 (),
+    .CLKFX180              (),
+    .CLKDV                 (clkdv),
     // Ports for dynamic phase shift
-    .PSCLK               (1'b0),
-    .PSEN                (1'b0),
-    .PSINCDEC            (1'b0),
-    .PSDONE              (psdone_unused),
+    .PSCLK                 (1'b0),
+    .PSEN                  (1'b0),
+    .PSINCDEC              (1'b0),
+    .PSDONE                (),
     // Other control and status signals
-    .LOCKED              (locked_unused),
-    .CLKINSTOPPED        (clkinstopped_unused),
-    .CLKFBSTOPPED        (clkfbstopped_unused),
-    .PWRDWN              (1'b0),
-    .RST                 (1'b0));
+    .LOCKED                (locked_int),
+    .STATUS                (status_int),
+ 
+    .RST                   (RESET),
+    // Unused pin- tie low
+    .DSSEN                 (1'b0));
+
 
   // Output buffering
   //-----------------------------------
+  BUFG clkf_buf
+   (.O (clkfb),
+    .I (clk0));
 
   BUFG clkout1_buf
    (.O   (CLK_OUT1),
-    .I   (clkout0));
+    .I   (clkdv));
 
 
 

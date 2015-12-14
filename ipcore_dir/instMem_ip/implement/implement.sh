@@ -66,7 +66,7 @@ cp ../example_design/instMem_ip_exdes.ucf results/
 cd results
 
 echo 'Running ngdbuild'
-ngdbuild -p xa7a100t-csg324-2i -sd ../../../ instMem_ip_exdes
+ngdbuild -p xc6slx16-csg324-3 -sd ../../../ instMem_ip_exdes
 
 echo 'Running map'
 map instMem_ip_exdes -o mapped.ncd
@@ -78,7 +78,7 @@ echo 'Running trce'
 trce -e 10 routed.ncd mapped.pcf -o routed
 
 echo 'Running design through bitgen'
-bitgen -w routed -g UnconstrainedPins:Allow
+bitgen -w routed
 
 echo 'Running netgen to create gate level Verilog model'
 netgen -ofmt verilog -sim -tm instMem_ip_exdes -pcf mapped.pcf -w -sdf_anno false routed.ncd routed.v

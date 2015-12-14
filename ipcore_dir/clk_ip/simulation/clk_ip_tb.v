@@ -57,7 +57,7 @@
 
 `timescale 1ps/1ps
 
-`define wait_lock @(posedge dut.clknetwork.mmcm_adv_inst.LOCKED)
+`define wait_lock @(posedge dut.clknetwork.dcm_sp_inst.LOCKED)
 
 module clk_ip_tb ();
 
@@ -71,7 +71,7 @@ module clk_ip_tb ();
   // how many cycles to run
   localparam  COUNT_PHASE = 1024;
   // we'll be using the period in many locations
-  localparam time PER1    = 10.000*ONE_NS;
+  localparam time PER1    = 10.0*ONE_NS;
   localparam time PER1_1  = PER1/2;
   localparam time PER1_2  = PER1 - PER1/2;
 
@@ -80,13 +80,11 @@ module clk_ip_tb ();
 
   // The high bit of the sampling counter
   wire        COUNT;
+  // Status and control signals
+  reg         RESET      = 0;
   reg         COUNTER_RESET = 0;
 wire [1:1] CLK_OUT;
 //Freq Check using the M & D values setting and actual Frequency generated
-real period1;
-real ref_period1;
-localparam  ref_period1_clkin1 = (10.000*3*14.000*1000/21.000);
-time prev_rise1;
 
 
   // Input clock generation
@@ -102,6 +100,10 @@ time prev_rise1;
     // Set up any display statements using time to be readable
     $timeformat(-12, 2, "ps", 10);
     COUNTER_RESET = 0;
+    test_phase = "reset";
+    RESET = 1;
+    #(PER1*6);
+    RESET = 0;
     test_phase = "wait lock";
     `wait_lock;
     #(PER1*6);
@@ -111,10 +113,6 @@ time prev_rise1;
 
     test_phase = "counting";
     #(PER1*COUNT_PHASE);
-    if ((period1 -ref_period1_clkin1) <= 100 && (period1 -ref_period1_clkin1) >= -100) begin
-    $display("Freq of CLK_OUT[1] ( in MHz ) : %0f\n", 1000000/period1);
-    end else 
-    $display("ERROR: Freq of CLK_OUT[1] is not correct"); 
 
     $display("SIMULATION PASSED");
     $display("SYSTEM_CLOCK_COUNTER : %0d\n",$time/PER1);
@@ -134,17 +132,10 @@ time prev_rise1;
     .COUNTER_RESET      (COUNTER_RESET),
     .CLK_OUT            (CLK_OUT),
     // High bits of the counters
-    .COUNT              (COUNT));
+    .COUNT              (COUNT),
+    // Status and control signals
+    .RESET              (RESET));
 
 // Freq Check 
-initial
-  prev_rise1 = 0;
-
-always @(posedge CLK_OUT[1])
-begin
-  if (prev_rise1 != 0)
-    period1 = $time - prev_rise1;
-  prev_rise1 = $time;
-end
 
 endmodule

@@ -99,6 +99,13 @@ group clear 0 end
 group insert \
     {clk_ip_tb.dut.counter} \
 
+group using {Status/control}
+group set -overlay 0
+group set -comment {}
+group clear 0 end
+
+group insert \
+   {nc::clk_ip_tb.RESET}  \ 
 
 set id [waveform add -signals [list {nc::clk_ip_tb.COUNT} ]]
 

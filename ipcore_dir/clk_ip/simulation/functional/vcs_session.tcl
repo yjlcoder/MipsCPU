@@ -8,6 +8,8 @@ gui_sg_addsignal -group clk_ip_group {clk_ip_tb.CLK_IN1}
 gui_sg_addsignal -group clk_ip_group {{Output_clocks}} -divider
 gui_sg_addsignal -group clk_ip_group {clk_ip_tb.dut.clk}
 gui_list_expand -id Wave.1 clk_ip_tb.dut.clk
+gui_sg_addsignal -group clk_ip_group {{Status_control}} -divider
+gui_sg_addsignal -group clk_ip_group {clk_ip_tb.RESET}
 gui_sg_addsignal -group clk_ip_group {{Counters}} -divider
 gui_sg_addsignal -group clk_ip_group {clk_ip_tb.COUNT}
 gui_sg_addsignal -group clk_ip_group {clk_ip_tb.dut.counter}

@@ -50,7 +50,7 @@ output [31 : 0] spo;
     .C_ADDR_WIDTH(10),
     .C_DEFAULT_DATA("0"),
     .C_DEPTH(1024),
-    .C_FAMILY("artix7"),
+    .C_FAMILY("spartan6"),
     .C_HAS_CLK(0),
     .C_HAS_D(0),
     .C_HAS_DPO(0),

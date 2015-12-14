@@ -27,26 +27,27 @@ module cpu_tb;
 	// Inputs
 	reg rst;
 	reg clk;
-    wire ram_enabler;
+    reg[4:0] btn;
 
 	// Instantiate the Unit Under Test (UUT)
 	cpu uut (
 		.rst(rst), 
 		.clk(clk),
-        .ram_enabler(ram_enabler)
+        .btn(btn)
 	);
 
 	initial begin
 		// Initialize Inputs
 		rst = 0;
 		clk = 0;
+        btn = 0;
 
         forever #10 clk = ~clk;
 	end
 
     initial begin
         rst = 1;
-        #195 rst = 0;
+        #300 rst = 0;
         #100000 $stop;
     end
 endmodule

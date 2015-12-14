@@ -2,7 +2,7 @@
 run
 -ifmt VHDL
 -ent instMem_ip_exdes 
--p xa7a100t-csg324-2i
+-p xc6slx16-csg324-3
 -ifn xst.prj
 -write_timing_constraints No
 -iobuf YES

@@ -50,7 +50,7 @@
 set projDir [file dirname [info script]]
 set projName clk_ip
 set topName clk_ip_exdes
-set device xa7a100tcsg324-2i
+set device xc6slx16csg324-3
 
 create_project $projName $projDir/results/$projName -part $device
 

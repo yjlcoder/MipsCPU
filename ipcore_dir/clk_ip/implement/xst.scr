@@ -1,7 +1,7 @@
 run
 -ifmt MIXED
 -top clk_ip_exdes
--p xa7a100t-csg324-2i
+-p xc6slx16-csg324-3
 -ifn xst.prj
 -ofn clk_ip_exdes
 -keep_hierarchy soft 

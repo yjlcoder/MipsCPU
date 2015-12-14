@@ -47,7 +47,7 @@
 # PART OF THIS FILE AT ALL TIMES.
 # 
 
-set device xa7a100tcsg324-2i
+set device xc6slx16csg324-3
 set projName clk_ip
 set design clk_ip
 set projDir [file dirname [info script]]
