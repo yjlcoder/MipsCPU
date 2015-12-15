@@ -30,10 +30,10 @@ module ram(
     output reg[31:0] vga_rdata 
     );
 
-    reg[7:0] byte_mem0[0:2048];
-    reg[7:0] byte_mem1[0:2048];
-    reg[7:0] byte_mem2[0:2048];
-    reg[7:0] byte_mem3[0:2048];
+    reg[7:0] byte_mem0[0:2047];
+    reg[7:0] byte_mem1[0:2047];
+    reg[7:0] byte_mem2[0:2047];
+    reg[7:0] byte_mem3[0:2047];
 
     always @ (posedge clk) begin
         if (enabler == 1 && write_enabler == 1) begin
@@ -63,11 +63,7 @@ module ram(
     end
 
     always @ (*) begin
-        if (enabler == 0) begin
-            vga_rdata <= 0;
-        end else begin
-            vga_rdata <= {byte_mem3[vga_raddr[18:2]], byte_mem2[vga_raddr[18:2]], byte_mem1[vga_raddr[18:2]], byte_mem0[vga_raddr[18:2]]};
-        end
+        vga_rdata <= {byte_mem3[vga_raddr[18:2]], byte_mem2[vga_raddr[18:2]], byte_mem1[vga_raddr[18:2]], byte_mem0[vga_raddr[18:2]]};
     end
 
 endmodule
