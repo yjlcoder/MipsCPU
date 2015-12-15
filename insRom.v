@@ -20,8 +20,8 @@
 //////////////////////////////////////////////////////////////////////////////////
 module instRom(
     input enabler,
-    input wire[31:0] addr,
-    output reg[31:0] inst
+    input wire[31:0] a,
+    output reg[31:0] spo
     );
 
     reg[31:0] instMem[0:255];
@@ -30,9 +30,9 @@ module instRom(
 
     always @ (*) begin
         if (enabler == 0)
-            inst <= 0;
+            spo <= 0;
         else
-            inst <= instMem[addr[18:2]];
+            spo <= instMem[a[18:2]];
     end
 
 endmodule

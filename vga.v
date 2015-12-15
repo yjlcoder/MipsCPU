@@ -1,81 +1,101 @@
 `timescale 1ns / 1ps
-//////////////////////////////////////////////////////////////////////////////////
-// Company: 
-// Engineer: 
-// 
-// Create Date:    18:41:49 12/11/2015 
-// Design Name: 
-// Module Name:    vga 
-// Project Name: 
-// Target Devices: 
-// Tool versions: 
-// Description: 
-//
-// Dependencies: 
-//
-// Revision: 
-// Revision 0.01 - File Created
-// Additional Comments: 
-//
-//////////////////////////////////////////////////////////////////////////////////
 
-module vga(
-        input clk, rst,
-        output Hsync, Vsync,
-        output [2:0] vgaRed, vgaGreen,
-        output [1:0] vgaBlue,
-        input [31:0] point_in,
-        input mark,
-        input [31:0] mem,
-        output [31:0] raddr
-    );
-    reg [8:0] posh, posv;
-    reg [10:0] count_h, count_v, point;
-	 initial begin
-	   count_h <= 0;
-		count_v <= 0;
+module vsync(line_clk, vsync_out, posY);
+   input line_clk;
+   output vsync_out;
+   output wire[10:0] posY;
+   
+   reg [10:0] count = 0;
+   reg vsync  = 0;
+
+   always @(posedge line_clk)
+	 if (count < 666)
+	   count <= count + 1;
+	 else
+	   count <= 0;
+      
+   always @(posedge line_clk)
+	 begin
+		if (count < 637)
+		  vsync 	<= 1;
+		else if (count >= 637 && count < 643)
+		  vsync 	<= 0;
+		else if (count >= 643)
+		  vsync 	<= 1;
 	 end
-    always @(negedge clk) 
-        if (mark) point <= point_in[10:0];
-		  
-    always @(negedge clk or negedge rst)
-        if (!rst)
-            count_h <= 11'd0;
-        else if (count_h == 11'd1056)
-            count_h <= 11'd0;
-        else
-            count_h <= count_h + 1'b1;
-    always @(negedge clk or negedge rst)
-        if (!rst)
-            count_v <= 11'd0;
-        else if (count_v == 11'd625)
-            count_v <= 11'd0;
-        else if (count_h == 11'd1056)
-            count_v <= count_v + 1'b1;
-    reg isready;
-	 always @(negedge clk or negedge rst)
-		  if (!rst) begin
-				posh <= 0;
-				posv <= 0;
-				isready <= 1'b0;
-		  end else begin
-				if ((count_h > 11'd384 && count_h < 11'd896) && (count_v > 11'd68 && count_v < 11'd580)) begin
-					isready <= 1'b1;
-					if (posh == 9'd510) posh <= 0; else posh <= posh + 1'b1;
-					if (posv == 9'd511) begin
-						posv <= 0;
-					end else begin
-						if (posh == 9'd510) posv <= posv + 1'b1;
-					end
-				end else begin
-					isready <= 1'b0;
-				end
-		  end
-	 assign raddr = {25'd0, posv[8:4], 2'd0};
-	 assign vgaRed = (isready && !mem[posh[8:4]]) ? 3'b111 : 3'b000;
-    assign vgaGreen = (isready && !mem[posh[8:4]] && (posv[8:4]!=point[9:5] || posh[8:4]!=point[4:0])) ? 3'b111 : 3'b000;
-    assign vgaBlue = (isready && !mem[posh[8:4]] && (posv[8:4]!=point[9:5] || posh[8:4]!=point[4:0])) ? 2'b11 : 2'b00;
-	 assign Hsync = (count_h <= 11'd80) ? 1'b0 : 1'b1;
-    assign Vsync = (count_v <= 11'd3) ? 1'b0 : 1'b1;
-endmodule
 
+   assign vsync_out  = vsync;
+   assign posY = count;
+   
+endmodule // hsync   
+
+module hsync(clk50, hsync_out, newline_out, posX);
+   input clk50;
+   output hsync_out, newline_out;
+   output wire[10:0] posX;
+   
+   reg [10:0] count = 0;
+   reg hsync 	= 0;
+   reg newline 	= 0;
+
+   always @(posedge clk50)
+	 begin
+		if (count < 1040)
+		  count  <= count + 1;
+		else
+		  count  <= 0;
+	 end
+   
+   always @(posedge clk50)
+	 begin
+		if (count == 0)
+		  newline <= 1;
+		else
+		  newline <= 0;
+	 end
+
+   always @(posedge clk50)
+	 begin
+		if (count < 856) // pixel data plus front porch
+		  hsync <= 1;
+		else if (count >= 856 && count < 976)
+		  hsync <= 0;
+		else if (count >= 976)
+		  hsync <= 1;
+	 end // always @ (posedge clk50)
+				 
+   assign hsync_out    = hsync;
+   assign newline_out  = newline;
+   assign posX = count;
+   
+endmodule // hsync
+
+module vga(clk50, Hsync, Vsync, red_out, blue_out, green_out, raddr, rdata);
+   input clk50;
+   input wire[31:0] rdata;
+   output Hsync, Vsync;
+   output wire[2:0] red_out, green_out;
+   output wire[1:0] blue_out;
+   output wire[31:0] raddr;
+   wire line_clk;
+   wire clk50;
+   wire [10:0] posY;
+   wire [10:0] posX;
+   //assign {red_out[2], green_out[2], red_out[1], green_out[1], blue_out[1], red_out[0], green_out[0], blue_out[0]} = (posX * posY);
+
+   assign raddr = 32'h400 + (posY/27) * 37 + (posX / 37);
+   assign {red_out, green_out, blue_out} = raddr[1:0] == 2'b00 ? rdata[7:0] : raddr[1:0] == 2'b01 ? rdata[15:8] : raddr[1:0] == 2'b10 ? rdata[23:16] : rdata[31:24];
+
+   hsync   hs(
+       .clk50(clk50),
+       .hsync_out(Hsync),
+       .newline_out(line_clk),
+       .posX(posX)
+   );
+
+   vsync   vs(
+       .line_clk(line_clk),
+       .vsync_out(Vsync),
+       .posY(posY)
+   );
+endmodule // top

@@ -25,13 +25,15 @@ module ram(
     input wire[31:0] addr,
     input wire[3:0] select,
     input wire[31:0] data_input,
-    output reg[31:0] data_output
+    output reg[31:0] data_output,
+    input wire[31:0] vga_raddr,
+    output reg[31:0] vga_rdata 
     );
 
-    reg[7:0] byte_mem0[0:32767];
-    reg[7:0] byte_mem1[0:32767];
-    reg[7:0] byte_mem2[0:32767];
-    reg[7:0] byte_mem3[0:32767];
+    reg[7:0] byte_mem0[0:2048];
+    reg[7:0] byte_mem1[0:2048];
+    reg[7:0] byte_mem2[0:2048];
+    reg[7:0] byte_mem3[0:2048];
 
     always @ (posedge clk) begin
         if (enabler == 1 && write_enabler == 1) begin
@@ -57,6 +59,14 @@ module ram(
             data_output <= {byte_mem3[addr[18:2]], byte_mem2[addr[18:2]], byte_mem1[addr[18:2]], byte_mem0[addr[18:2]]};
         end else begin
             data_output <= 0;
+        end
+    end
+
+    always @ (*) begin
+        if (enabler == 0) begin
+            vga_rdata <= 0;
+        end else begin
+            vga_rdata <= {byte_mem3[vga_raddr[18:2]], byte_mem2[vga_raddr[18:2]], byte_mem1[vga_raddr[18:2]], byte_mem0[vga_raddr[18:2]]};
         end
     end
 

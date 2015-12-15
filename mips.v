@@ -23,7 +23,6 @@ module mips(
     input clk,
     input wire[31:0] ins_input,
     output wire[31:0] addr_output,
-    output enabler_output,
 
     input wire[31:0] ram_data,
     output wire[31:0] ram_addr_output,
