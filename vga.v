@@ -83,8 +83,8 @@ module vga(clk50, Hsync, Vsync, red_out, blue_out, green_out, raddr, rdata);
    wire [10:0] posX;
    //assign {red_out[2], green_out[2], red_out[1], green_out[1], blue_out[1], red_out[0], green_out[0], blue_out[0]} = (posX * posY);
 
-   assign raddr = 32'h400 + (posY/27) * 37 + (posX / 37);
-   assign {red_out, green_out, blue_out} = raddr[1:0] == 2'b00 ? rdata[7:0] : raddr[1:0] == 2'b01 ? rdata[15:8] : raddr[1:0] == 2'b10 ? rdata[23:16] : rdata[31:24];
+   assign raddr = posX > 800 ? 32'h400 : posY > 600 ? 32'h400 : 32'h400 + (posY/20) * 40 + (posX/20);
+   assign {red_out, green_out, blue_out} = raddr[1:0] == 2'b11 ? rdata[7:0] : raddr[1:0] == 2'b10 ? rdata[15:8] : raddr[1:0] == 2'b01 ? rdata[23:16] : rdata[31:24];
 
    hsync   hs(
        .clk50(clk50),

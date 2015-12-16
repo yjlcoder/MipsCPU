@@ -30,10 +30,10 @@ module ram(
     output reg[31:0] vga_rdata 
     );
 
-    reg[7:0] byte_mem0[0:2047];
-    reg[7:0] byte_mem1[0:2047];
-    reg[7:0] byte_mem2[0:2047];
-    reg[7:0] byte_mem3[0:2047];
+    reg[7:0] byte_mem0[0:1023];
+    reg[7:0] byte_mem1[0:1023];
+    reg[7:0] byte_mem2[0:1023];
+    reg[7:0] byte_mem3[0:1023];
 
     always @ (posedge clk) begin
         if (enabler == 1 && write_enabler == 1) begin
