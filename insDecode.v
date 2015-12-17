@@ -247,7 +247,7 @@ module insDecode(
                     alusel_output <= `ALUSEL_JUMP_BRANCH;
                     reg1_read_enabler <= 0;
                     reg2_read_enabler <= 0;
-                    ret_addr <= pc_8;
+                    ret_addr <= pc_4;
                     branch_flag_output <= 1;
                     next_delay <= 1;
                     branch_target_output <= {pc_4[31:28], insDecode_ins[25:0], 2'b00};
@@ -701,7 +701,7 @@ module insDecode(
                             reg1_read_enabler <= 1;
                             reg2_read_enabler <= 0;
                             dest_addr <= insDecode_ins[15:11];
-                            ret_addr <= pc_8;
+                            ret_addr <= pc_4;
                             branch_target_output <= regOp1;
                             branch_flag_output <= 1;
                             next_delay <= 1;

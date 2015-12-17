@@ -41,15 +41,15 @@ module instMem_ip(
   spo
 );
 
-input [9 : 0] a;
+input [10 : 0] a;
 output [31 : 0] spo;
 
 // synthesis translate_off
 
   DIST_MEM_GEN_V7_2 #(
-    .C_ADDR_WIDTH(10),
+    .C_ADDR_WIDTH(11),
     .C_DEFAULT_DATA("0"),
-    .C_DEPTH(1024),
+    .C_DEPTH(2048),
     .C_FAMILY("spartan6"),
     .C_HAS_CLK(0),
     .C_HAS_D(0),

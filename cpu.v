@@ -45,6 +45,12 @@ module cpu(
     wire[31:0] vga_raddr;
     wire[31:0] vga_rdata;
 
+    wire btn_we;
+    wire btn_enabler;
+    wire [31:0] btn_waddr;
+    wire [31:0] btn_wdata;
+    wire [3:0] btn_select;
+
     clk_ip clk_ip0(
         .CLK_IN1(clk),
         .CLK_OUT1(clk0),
@@ -57,6 +63,7 @@ module cpu(
     mips mips0(
         .rst(rst), 
         .clk(clk0),
+        //.clk(clk),
         .ins_input(inst),
         .addr_output(instAddr),
 
@@ -68,19 +75,22 @@ module cpu(
         .ram_enabler(ram_enabler)
     );
 
-    /*instRom instMem(
+    /*
+    instRom instMem(
         .enabler(enabler),
         .a(instAddr),
         .spo(inst)
-    );*/
+    );
+    */
 
     instMem_ip instMem(
-        .a(instAddr[11:2]),
+        .a(instAddr[12:2]),
         .spo(inst)
     );
 
     ram ram0(
         .clk(clk0),
+        //.clk(clk),
         .enabler(ram_enabler),
         .write_enabler(ram_write_enabler),
         .addr(ram_addr_output),
@@ -88,7 +98,8 @@ module cpu(
         .data_input(ram_data_output),
         .data_output(ram_data_input),
         .vga_raddr(vga_raddr),
-        .vga_rdata(vga_rdata)
+        .vga_rdata(vga_rdata),
+        .btn_data(btn_wdata)
     );
 
     vga vga0(
@@ -102,5 +113,10 @@ module cpu(
         .rdata(vga_rdata)
     );
 
+    btn_module btn0(
+        .clk(clk0),
+        .btn(btn),
+        .wdata(btn_wdata)
+    );
 endmodule
 
