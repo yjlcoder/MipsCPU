@@ -122,7 +122,7 @@ ENTITY instMem_ip_TB_STIM_GEN IS
   PORT (
     CLK : IN STD_LOGIC;
     RST : IN STD_LOGIC;
-    A   : OUT  STD_LOGIC_VECTOR(10-1 downto 0) := (OTHERS => '0');
+    A   : OUT  STD_LOGIC_VECTOR(11-1 downto 0) := (OTHERS => '0');
     DATA_IN : IN STD_LOGIC_VECTOR (31 DOWNTO 0);   --OUTPUT VECTOR 
         
     STATUS : OUT STD_LOGIC:= '0'
@@ -145,7 +145,7 @@ ARCHITECTURE BEHAVIORAL OF instMem_ip_TB_STIM_GEN IS
   END std_logic_vector_len;
 
   CONSTANT ZERO : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
-  SIGNAL READ_ADDR_INT : STD_LOGIC_VECTOR(9 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL READ_ADDR_INT : STD_LOGIC_VECTOR(10 DOWNTO 0) := (OTHERS => '0');
   SIGNAL READ_ADDR : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
   SIGNAL CHECK_READ_ADDR : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
   SIGNAL EXPECTED_DATA : STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
@@ -157,7 +157,7 @@ BEGIN
 
 SYNTH_COE:  IF(C_ROM_SYNTH =0 ) GENERATE
 
-type mem_type is array (1023 downto 0) of std_logic_vector(31 downto 0);
+type mem_type is array (2047 downto 0) of std_logic_vector(31 downto 0);
 
   FUNCTION bit_to_sl(input: BIT) RETURN STD_LOGIC IS
     VARIABLE temp_return : STD_LOGIC;
@@ -258,7 +258,7 @@ constant c_init : mem_type := init_memory(1,
 										            "instMem_ip.mif",
                                           DEFAULT_DATA,
                                           32,
-                                          1024);
+                                          2048);
 
 
 constant rom : mem_type := c_init;
@@ -267,7 +267,7 @@ BEGIN
  EXPECTED_DATA <= rom(conv_integer(unsigned(check_read_addr)));
 
  CHECKER_RD_AGEN_INST:ENTITY work.instMem_ip_TB_AGEN
-   GENERIC MAP( C_MAX_DEPTH =>1024 )
+   GENERIC MAP( C_MAX_DEPTH =>2048 )
 
    PORT MAP(
      CLK => CLK,
@@ -312,13 +312,13 @@ SYNTH_CHECKER: IF(C_ROM_SYNTH = 1) GENERATE
 END GENERATE;
 
 
-  READ_ADDR_INT(9 DOWNTO 0) <= READ_ADDR(9 DOWNTO 0);
+  READ_ADDR_INT(10 DOWNTO 0) <= READ_ADDR(10 DOWNTO 0);
   A <= READ_ADDR_INT ;
 
   CHECK_DATA(0) <= DO_READ;
 
   RD_AGEN_INST:ENTITY work.instMem_ip_TB_AGEN
-    GENERIC MAP( C_MAX_DEPTH => 1024 )
+    GENERIC MAP( C_MAX_DEPTH => 2048 )
 
     PORT MAP(
       CLK => CLK,

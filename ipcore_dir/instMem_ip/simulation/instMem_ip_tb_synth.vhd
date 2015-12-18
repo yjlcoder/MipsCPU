@@ -100,7 +100,7 @@ ARCHITECTURE instMem_ip_synth_ARCH OF instMem_ip_tb_synth IS
 COMPONENT instMem_ip_exdes
   PORT (
     SPO        : OUT STD_LOGIC_VECTOR(32-1 downto 0);
-    A          : IN  STD_LOGIC_VECTOR(10-1-(4*0*boolean'pos(10>4)) downto 0)
+    A          : IN  STD_LOGIC_VECTOR(11-1-(4*0*boolean'pos(11>4)) downto 0)
                  := (OTHERS => '0')
       );
 
@@ -117,8 +117,8 @@ END COMPONENT;
   SIGNAL RESET_SYNC_R2 : STD_LOGIC:='1';
   SIGNAL RESET_SYNC_R3 : STD_LOGIC:='1';
 
-  SIGNAL ADDR: STD_LOGIC_VECTOR(9 DOWNTO 0) := (OTHERS => '0');
-  SIGNAL ADDR_R: STD_LOGIC_VECTOR(9 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL ADDR: STD_LOGIC_VECTOR(10 DOWNTO 0) := (OTHERS => '0');
+  SIGNAL ADDR_R: STD_LOGIC_VECTOR(10 DOWNTO 0) := (OTHERS => '0');
   SIGNAL SPO: STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
   SIGNAL SPO_R: STD_LOGIC_VECTOR(31 DOWNTO 0) := (OTHERS => '0');
   SIGNAL ITER_R0 : STD_LOGIC := '0';

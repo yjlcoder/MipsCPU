@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Wed Dec 16 02:33:18 2015
+# Date: Fri Dec 18 05:26:05 2015
 #
 ##############################################################
 #
@@ -47,7 +47,7 @@ CSET component_name=instMem_ip
 CSET data_width=32
 CSET default_data=0
 CSET default_data_radix=16
-CSET depth=1024
+CSET depth=2048
 CSET dual_port_address=non_registered
 CSET dual_port_output_clock_enable=false
 CSET input_clock_enable=false
@@ -70,4 +70,4 @@ CSET sync_reset_qspo=false
 MISC pkg_timestamp=2012-11-21T20:07:40Z
 # END Extra information
 GENERATE
-# CRC: 543c3cda
+# CRC: 8daaed2a

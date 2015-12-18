@@ -43,7 +43,7 @@
 
 //----------- Begin Cut here for INSTANTIATION Template ---// INST_TAG
 instMem_ip your_instance_name (
-  .a(a), // input [9 : 0] a
+  .a(a), // input [10 : 0] a
   .spo(spo) // output [31 : 0] spo
 );
 // INST_TAG_END ------ End INSTANTIATION Template ---------

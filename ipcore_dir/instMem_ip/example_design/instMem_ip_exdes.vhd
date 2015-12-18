@@ -76,7 +76,7 @@ use unisim.vcomponents.all;
 entity instMem_ip_exdes is
   PORT (
     SPO        : OUT STD_LOGIC_VECTOR(32-1 downto 0);
-    A          : IN  STD_LOGIC_VECTOR(10-1-(4*0*boolean'pos(10>4)) downto 0)
+    A          : IN  STD_LOGIC_VECTOR(11-1-(4*0*boolean'pos(11>4)) downto 0)
                  := (OTHERS => '0')
       );
 
@@ -91,7 +91,7 @@ architecture xilinx of instMem_ip_exdes is
   PORT (
 
     SPO                     : OUT STD_LOGIC_VECTOR(32-1 downto 0);
-    A                       : IN  STD_LOGIC_VECTOR(10-1-(4*0*boolean'pos(10>4)) downto 0)
+    A                       : IN  STD_LOGIC_VECTOR(11-1-(4*0*boolean'pos(11>4)) downto 0)
                               := (OTHERS => '0')
 
 );

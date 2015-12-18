@@ -269,7 +269,7 @@ sw $11, ($sp)
 addi $sp, $sp, 4
 sw $12, ($sp)
 
-ori $9, $0, 1193
+ori $9, $0, 1234
 DrawBlock_CAL:
 bgt $6, 2, DrawBlock_GT
 mul $6, $6, 8
