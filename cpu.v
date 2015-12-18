@@ -27,7 +27,11 @@ module cpu(
     output [2:0] red_out,
     output [2:0] green_out,
     output Hsync_out,
-    output Vsync_out
+    output Vsync_out,
+
+    output [6:0] seg,
+    output [3:0] an,
+    output dp
     );
 
     wire[31:0] instAddr;
@@ -117,6 +121,14 @@ module cpu(
         .clk(clk0),
         .btn(btn),
         .wdata(btn_wdata)
+    );
+
+    segtop seg0(
+        .clk50(clk0),
+        .rst(rst),
+        .seg(seg),
+        .an(an),
+        .dp(dp)
     );
 endmodule
 

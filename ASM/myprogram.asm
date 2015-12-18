@@ -315,6 +315,55 @@ mul $7, $7, $6
 beq $7, 1, Win1
 beq $7, 8, Win2
 
+ori $5, $0, 0
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 1
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 2
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 3
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 4
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 5
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 6
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 7
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+ori $5, $0, 8
+lb $6, 0x103($5)
+nop
+nop
+beq $6, 0, RET_isComplete
+
+beq $0, $0, LOOP_END_FOR_1
+
+RET_isComplete:
 lw $7, ($sp)
 subi $sp, $sp, 4
 lw $6, ($sp)
